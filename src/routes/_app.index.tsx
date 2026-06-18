@@ -238,7 +238,7 @@ function Dashboard() {
               <p className="text-white/85">Repor estoque dos SKUs ML123 e MAG456 e ajustar preço de 8 produtos na Magalu.</p>
             </div>
 
-            <Link to="/gerente-ia" className="block text-center rounded-md bg-brand-yellow text-brand-navy font-semibold text-sm py-2.5 hover:brightness-105">
+            <Link to="/chat" className="block text-center rounded-md bg-brand-yellow text-brand-navy font-semibold text-sm py-2.5 hover:brightness-105">
               Ver todas as recomendações
             </Link>
           </div>

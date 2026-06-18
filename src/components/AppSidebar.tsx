@@ -31,7 +31,7 @@ const nav: NavItem[] = [
   { to: "/campanhas", label: "Campanhas", icon: Megaphone },
   { to: "/central-dados", label: "Central de Dados", icon: Database },
   { to: "/relatorios", label: "Relatórios", icon: FileText },
-  { to: "/gerente-ia", label: "Gerente de Operações IA", icon: Bot },
+  { to: "/chat", label: "Gerente de Operações IA", icon: Bot },
   { to: "/central-alertas", label: "Central de Alertas", icon: AlertTriangle },
   { to: "/oportunidades", label: "Oportunidades IA", icon: Lightbulb },
   { to: "/planejamento", label: "Planejamento Comercial", icon: CalendarRange },
