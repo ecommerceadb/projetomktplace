@@ -18,6 +18,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
+import logoAsset from "@/assets/amigos-do-bem-logo.webp.asset.json";
 
 type NavItem = { to: string; label: string; icon: ComponentType<SVGProps<SVGSVGElement>> };
 
@@ -45,10 +46,8 @@ export function AppSidebar() {
   return (
     <aside className="hidden lg:flex w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground">
       <div className="px-5 pt-6 pb-4 flex flex-col items-center text-center">
-        <div className="size-20 rounded-full bg-gradient-to-br from-brand-orange to-brand-yellow flex items-center justify-center shadow-lg ring-4 ring-sidebar">
-          <span className="font-black text-sidebar text-xs leading-tight">
-            Amigos<br />do Bem
-          </span>
+        <div className="size-24 rounded-full bg-white flex items-center justify-center shadow-lg ring-4 ring-sidebar overflow-hidden">
+          <img src={logoAsset.url} alt="Amigos do Bem" className="size-full object-contain" />
         </div>
         <div className="mt-3">
           <div className="text-[11px] tracking-[0.22em] font-semibold text-brand-yellow">MARKETPLACE</div>
