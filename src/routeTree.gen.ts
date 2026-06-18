@@ -11,6 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
+import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
+import { Route as AppOportunidadesRouteImport } from './routes/_app.oportunidades'
+import { Route as AppGerenteIaRouteImport } from './routes/_app.gerente-ia'
+import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
+import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
+import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
+import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
+import { Route as AppCatalogoRouteImport } from './routes/_app.catalogo'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -21,24 +30,128 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
+  id: '/planejamento',
+  path: '/planejamento',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOportunidadesRoute = AppOportunidadesRouteImport.update({
+  id: '/oportunidades',
+  path: '/oportunidades',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGerenteIaRoute = AppGerenteIaRouteImport.update({
+  id: '/gerente-ia',
+  path: '/gerente-ia',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEstoqueRoute = AppEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
+  id: '/central-dados',
+  path: '/central-dados',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCentralAlertasRoute = AppCentralAlertasRouteImport.update({
+  id: '/central-alertas',
+  path: '/central-alertas',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCatalogoRoute = AppCatalogoRouteImport.update({
+  id: '/catalogo',
+  path: '/catalogo',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/catalogo': typeof AppCatalogoRoute
+  '/central-alertas': typeof AppCentralAlertasRoute
+  '/central-dados': typeof AppCentralDadosRoute
+  '/configuracoes': typeof AppConfiguracoesRoute
+  '/estoque': typeof AppEstoqueRoute
+  '/gerente-ia': typeof AppGerenteIaRoute
+  '/oportunidades': typeof AppOportunidadesRoute
+  '/planejamento': typeof AppPlanejamentoRoute
+  '/relatorios': typeof AppRelatoriosRoute
 }
 export interface FileRoutesByTo {
+  '/catalogo': typeof AppCatalogoRoute
+  '/central-alertas': typeof AppCentralAlertasRoute
+  '/central-dados': typeof AppCentralDadosRoute
+  '/configuracoes': typeof AppConfiguracoesRoute
+  '/estoque': typeof AppEstoqueRoute
+  '/gerente-ia': typeof AppGerenteIaRoute
+  '/oportunidades': typeof AppOportunidadesRoute
+  '/planejamento': typeof AppPlanejamentoRoute
+  '/relatorios': typeof AppRelatoriosRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
+  '/_app/catalogo': typeof AppCatalogoRoute
+  '/_app/central-alertas': typeof AppCentralAlertasRoute
+  '/_app/central-dados': typeof AppCentralDadosRoute
+  '/_app/configuracoes': typeof AppConfiguracoesRoute
+  '/_app/estoque': typeof AppEstoqueRoute
+  '/_app/gerente-ia': typeof AppGerenteIaRoute
+  '/_app/oportunidades': typeof AppOportunidadesRoute
+  '/_app/planejamento': typeof AppPlanejamentoRoute
+  '/_app/relatorios': typeof AppRelatoriosRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/catalogo'
+    | '/central-alertas'
+    | '/central-dados'
+    | '/configuracoes'
+    | '/estoque'
+    | '/gerente-ia'
+    | '/oportunidades'
+    | '/planejamento'
+    | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_app' | '/_app/'
+  to:
+    | '/catalogo'
+    | '/central-alertas'
+    | '/central-dados'
+    | '/configuracoes'
+    | '/estoque'
+    | '/gerente-ia'
+    | '/oportunidades'
+    | '/planejamento'
+    | '/relatorios'
+    | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/catalogo'
+    | '/_app/central-alertas'
+    | '/_app/central-dados'
+    | '/_app/configuracoes'
+    | '/_app/estoque'
+    | '/_app/gerente-ia'
+    | '/_app/oportunidades'
+    | '/_app/planejamento'
+    | '/_app/relatorios'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,14 +174,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/relatorios': {
+      id: '/_app/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AppRelatoriosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/planejamento': {
+      id: '/_app/planejamento'
+      path: '/planejamento'
+      fullPath: '/planejamento'
+      preLoaderRoute: typeof AppPlanejamentoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/oportunidades': {
+      id: '/_app/oportunidades'
+      path: '/oportunidades'
+      fullPath: '/oportunidades'
+      preLoaderRoute: typeof AppOportunidadesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/gerente-ia': {
+      id: '/_app/gerente-ia'
+      path: '/gerente-ia'
+      fullPath: '/gerente-ia'
+      preLoaderRoute: typeof AppGerenteIaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/estoque': {
+      id: '/_app/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AppEstoqueRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/configuracoes': {
+      id: '/_app/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AppConfiguracoesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/central-dados': {
+      id: '/_app/central-dados'
+      path: '/central-dados'
+      fullPath: '/central-dados'
+      preLoaderRoute: typeof AppCentralDadosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/central-alertas': {
+      id: '/_app/central-alertas'
+      path: '/central-alertas'
+      fullPath: '/central-alertas'
+      preLoaderRoute: typeof AppCentralAlertasRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/catalogo': {
+      id: '/_app/catalogo'
+      path: '/catalogo'
+      fullPath: '/catalogo'
+      preLoaderRoute: typeof AppCatalogoRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppCatalogoRoute: typeof AppCatalogoRoute
+  AppCentralAlertasRoute: typeof AppCentralAlertasRoute
+  AppCentralDadosRoute: typeof AppCentralDadosRoute
+  AppConfiguracoesRoute: typeof AppConfiguracoesRoute
+  AppEstoqueRoute: typeof AppEstoqueRoute
+  AppGerenteIaRoute: typeof AppGerenteIaRoute
+  AppOportunidadesRoute: typeof AppOportunidadesRoute
+  AppPlanejamentoRoute: typeof AppPlanejamentoRoute
+  AppRelatoriosRoute: typeof AppRelatoriosRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCatalogoRoute: AppCatalogoRoute,
+  AppCentralAlertasRoute: AppCentralAlertasRoute,
+  AppCentralDadosRoute: AppCentralDadosRoute,
+  AppConfiguracoesRoute: AppConfiguracoesRoute,
+  AppEstoqueRoute: AppEstoqueRoute,
+  AppGerenteIaRoute: AppGerenteIaRoute,
+  AppOportunidadesRoute: AppOportunidadesRoute,
+  AppPlanejamentoRoute: AppPlanejamentoRoute,
+  AppRelatoriosRoute: AppRelatoriosRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
