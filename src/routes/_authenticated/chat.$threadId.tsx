@@ -66,8 +66,8 @@ function ChatThread() {
 
   const disabled = status === "submitted" || status === "streaming" || !token;
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function handleSubmit(_msg: unknown, event: React.FormEvent) {
+    event.preventDefault();
     if (!input.trim() || disabled) return;
     sendMessage({ text: input.trim() });
     setInput("");
