@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { UIMessage } from "ai";
 
 export const listThreads = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -49,6 +48,12 @@ export const renameThread = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export type StoredMessage = {
+  id: string;
+  role: "user" | "assistant" | "system";
+  parts: Array<{ type: string; text?: string; [k: string]: unknown }>;
+};
+
 export const loadThreadMessages = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { threadId: string }) => d)
@@ -59,9 +64,6 @@ export const loadThreadMessages = createServerFn({ method: "POST" })
       .eq("thread_id", data.threadId)
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
-    return (rows ?? []).map((r) => ({
-      id: r.id,
-      role: r.role as "user" | "assistant" | "system",
-      parts: r.parts as unknown as UIMessage["parts"],
-    }));
+    // Round-trip through JSON to strip any non-serializable shapes from the JSONB column.
+    return JSON.parse(JSON.stringify(rows ?? [])) as StoredMessage[];
   });
