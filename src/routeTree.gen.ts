@@ -11,15 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppSeoRouteImport } from './routes/_app.seo'
 import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
 import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
+import { Route as AppPerformanceRouteImport } from './routes/_app.performance'
 import { Route as AppOportunidadesRouteImport } from './routes/_app.oportunidades'
 import { Route as AppGerenteIaRouteImport } from './routes/_app.gerente-ia'
 import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
 import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
+import { Route as AppConcorrenciaRouteImport } from './routes/_app.concorrencia'
 import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
 import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
 import { Route as AppCatalogoRouteImport } from './routes/_app.catalogo'
+import { Route as AppCampanhasRouteImport } from './routes/_app.campanhas'
+import { Route as AppCadastroRouteImport } from './routes/_app.cadastro'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -30,6 +35,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSeoRoute = AppSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
@@ -38,6 +48,11 @@ const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
 const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
   id: '/planejamento',
   path: '/planejamento',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPerformanceRoute = AppPerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
   getParentRoute: () => AppRoute,
 } as any)
 const AppOportunidadesRoute = AppOportunidadesRouteImport.update({
@@ -60,6 +75,11 @@ const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
   path: '/configuracoes',
   getParentRoute: () => AppRoute,
 } as any)
+const AppConcorrenciaRoute = AppConcorrenciaRouteImport.update({
+  id: '/concorrencia',
+  path: '/concorrencia',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
   id: '/central-dados',
   path: '/central-dados',
@@ -75,82 +95,122 @@ const AppCatalogoRoute = AppCatalogoRouteImport.update({
   path: '/catalogo',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCampanhasRoute = AppCampanhasRouteImport.update({
+  id: '/campanhas',
+  path: '/campanhas',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCadastroRoute = AppCadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/cadastro': typeof AppCadastroRoute
+  '/campanhas': typeof AppCampanhasRoute
   '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
   '/central-dados': typeof AppCentralDadosRoute
+  '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
   '/gerente-ia': typeof AppGerenteIaRoute
   '/oportunidades': typeof AppOportunidadesRoute
+  '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
   '/relatorios': typeof AppRelatoriosRoute
+  '/seo': typeof AppSeoRoute
 }
 export interface FileRoutesByTo {
+  '/cadastro': typeof AppCadastroRoute
+  '/campanhas': typeof AppCampanhasRoute
   '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
   '/central-dados': typeof AppCentralDadosRoute
+  '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
   '/gerente-ia': typeof AppGerenteIaRoute
   '/oportunidades': typeof AppOportunidadesRoute
+  '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
   '/relatorios': typeof AppRelatoriosRoute
+  '/seo': typeof AppSeoRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
+  '/_app/cadastro': typeof AppCadastroRoute
+  '/_app/campanhas': typeof AppCampanhasRoute
   '/_app/catalogo': typeof AppCatalogoRoute
   '/_app/central-alertas': typeof AppCentralAlertasRoute
   '/_app/central-dados': typeof AppCentralDadosRoute
+  '/_app/concorrencia': typeof AppConcorrenciaRoute
   '/_app/configuracoes': typeof AppConfiguracoesRoute
   '/_app/estoque': typeof AppEstoqueRoute
   '/_app/gerente-ia': typeof AppGerenteIaRoute
   '/_app/oportunidades': typeof AppOportunidadesRoute
+  '/_app/performance': typeof AppPerformanceRoute
   '/_app/planejamento': typeof AppPlanejamentoRoute
   '/_app/relatorios': typeof AppRelatoriosRoute
+  '/_app/seo': typeof AppSeoRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cadastro'
+    | '/campanhas'
     | '/catalogo'
     | '/central-alertas'
     | '/central-dados'
+    | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
     | '/gerente-ia'
     | '/oportunidades'
+    | '/performance'
     | '/planejamento'
     | '/relatorios'
+    | '/seo'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/cadastro'
+    | '/campanhas'
     | '/catalogo'
     | '/central-alertas'
     | '/central-dados'
+    | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
     | '/gerente-ia'
     | '/oportunidades'
+    | '/performance'
     | '/planejamento'
     | '/relatorios'
+    | '/seo'
     | '/'
   id:
     | '__root__'
     | '/_app'
+    | '/_app/cadastro'
+    | '/_app/campanhas'
     | '/_app/catalogo'
     | '/_app/central-alertas'
     | '/_app/central-dados'
+    | '/_app/concorrencia'
     | '/_app/configuracoes'
     | '/_app/estoque'
     | '/_app/gerente-ia'
     | '/_app/oportunidades'
+    | '/_app/performance'
     | '/_app/planejamento'
     | '/_app/relatorios'
+    | '/_app/seo'
     | '/_app/'
   fileRoutesById: FileRoutesById
 }
@@ -174,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/seo': {
+      id: '/_app/seo'
+      path: '/seo'
+      fullPath: '/seo'
+      preLoaderRoute: typeof AppSeoRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/relatorios': {
       id: '/_app/relatorios'
       path: '/relatorios'
@@ -186,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/planejamento'
       fullPath: '/planejamento'
       preLoaderRoute: typeof AppPlanejamentoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/performance': {
+      id: '/_app/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof AppPerformanceRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/oportunidades': {
@@ -216,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppConfiguracoesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/concorrencia': {
+      id: '/_app/concorrencia'
+      path: '/concorrencia'
+      fullPath: '/concorrencia'
+      preLoaderRoute: typeof AppConcorrenciaRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/central-dados': {
       id: '/_app/central-dados'
       path: '/central-dados'
@@ -237,32 +318,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCatalogoRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/campanhas': {
+      id: '/_app/campanhas'
+      path: '/campanhas'
+      fullPath: '/campanhas'
+      preLoaderRoute: typeof AppCampanhasRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/cadastro': {
+      id: '/_app/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof AppCadastroRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppCadastroRoute: typeof AppCadastroRoute
+  AppCampanhasRoute: typeof AppCampanhasRoute
   AppCatalogoRoute: typeof AppCatalogoRoute
   AppCentralAlertasRoute: typeof AppCentralAlertasRoute
   AppCentralDadosRoute: typeof AppCentralDadosRoute
+  AppConcorrenciaRoute: typeof AppConcorrenciaRoute
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppEstoqueRoute: typeof AppEstoqueRoute
   AppGerenteIaRoute: typeof AppGerenteIaRoute
   AppOportunidadesRoute: typeof AppOportunidadesRoute
+  AppPerformanceRoute: typeof AppPerformanceRoute
   AppPlanejamentoRoute: typeof AppPlanejamentoRoute
   AppRelatoriosRoute: typeof AppRelatoriosRoute
+  AppSeoRoute: typeof AppSeoRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCadastroRoute: AppCadastroRoute,
+  AppCampanhasRoute: AppCampanhasRoute,
   AppCatalogoRoute: AppCatalogoRoute,
   AppCentralAlertasRoute: AppCentralAlertasRoute,
   AppCentralDadosRoute: AppCentralDadosRoute,
+  AppConcorrenciaRoute: AppConcorrenciaRoute,
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppEstoqueRoute: AppEstoqueRoute,
   AppGerenteIaRoute: AppGerenteIaRoute,
   AppOportunidadesRoute: AppOportunidadesRoute,
+  AppPerformanceRoute: AppPerformanceRoute,
   AppPlanejamentoRoute: AppPlanejamentoRoute,
   AppRelatoriosRoute: AppRelatoriosRoute,
+  AppSeoRoute: AppSeoRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
