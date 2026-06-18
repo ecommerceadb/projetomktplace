@@ -51,19 +51,18 @@ export const renameThread = createServerFn({ method: "POST" })
 export type StoredMessage = {
   id: string;
   role: "user" | "assistant" | "system";
-  parts: Array<{ type: string; text?: string; [k: string]: unknown }>;
+  parts: Array<{ type: string; text?: string }>;
 };
 
 export const loadThreadMessages = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { threadId: string }) => d)
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data, context }): Promise<StoredMessage[]> => {
     const { data: rows, error } = await context.supabase
       .from("chat_messages")
       .select("id, role, parts, created_at")
       .eq("thread_id", data.threadId)
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
-    // Round-trip through JSON to strip any non-serializable shapes from the JSONB column.
     return JSON.parse(JSON.stringify(rows ?? [])) as StoredMessage[];
   });
