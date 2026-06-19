@@ -76,7 +76,7 @@ function PerformancePage() {
 function VisaoGeral() {
   const totals = useMemo(() => {
     const byMkt: Record<Marketplace, number> = {
-      "Mercado Livre": 0, Amazon: 0, Shopee: 0, Magalu: 0, "Site Próprio": 0,
+      "Mercado Livre": 0, Magalu: 0,
     };
     let total = 0;
     for (const row of STATE_DATA) {
