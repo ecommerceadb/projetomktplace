@@ -12,15 +12,12 @@ export const Route = createFileRoute("/_app/performance")({
   component: PerformancePage,
 });
 
-const MARKETPLACES = ["Mercado Livre", "Amazon", "Shopee", "Magalu", "Site Próprio"] as const;
+const MARKETPLACES = ["Mercado Livre", "Magalu"] as const;
 type Marketplace = (typeof MARKETPLACES)[number];
 
 const MARKETPLACE_COLORS: Record<Marketplace, string> = {
   "Mercado Livre": "bg-brand-yellow",
-  Amazon: "bg-brand-orange",
-  Shopee: "bg-danger",
   Magalu: "bg-info",
-  "Site Próprio": "bg-success",
 };
 
 type StateRow = {
