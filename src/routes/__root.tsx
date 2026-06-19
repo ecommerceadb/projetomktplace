@@ -97,6 +97,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Amigos do Bem · Painel de Operações" },
       { name: "twitter:image", content: logoAsset.url },
+      { name: "description", content: "Futuro Marketplace creates an interactive dashboard to visualize a future operations panel for a marketplace." },
+      { property: "og:description", content: "Futuro Marketplace creates an interactive dashboard to visualize a future operations panel for a marketplace." },
+      { name: "twitter:description", content: "Futuro Marketplace creates an interactive dashboard to visualize a future operations panel for a marketplace." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1d0a1848-a377-4525-9d8a-fc7645e963f4/id-preview-fdcf0e9b--5f8ae46d-1aea-439a-aa87-b8175451821f.lovable.app-1781869952541.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1d0a1848-a377-4525-9d8a-fc7645e963f4/id-preview-fdcf0e9b--5f8ae46d-1aea-439a-aa87-b8175451821f.lovable.app-1781869952541.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
