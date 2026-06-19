@@ -12,15 +12,12 @@ export const Route = createFileRoute("/_app/performance")({
   component: PerformancePage,
 });
 
-const MARKETPLACES = ["Mercado Livre", "Amazon", "Shopee", "Magalu", "Site Próprio"] as const;
+const MARKETPLACES = ["Mercado Livre", "Magalu"] as const;
 type Marketplace = (typeof MARKETPLACES)[number];
 
 const MARKETPLACE_COLORS: Record<Marketplace, string> = {
   "Mercado Livre": "bg-brand-yellow",
-  Amazon: "bg-brand-orange",
-  Shopee: "bg-danger",
   Magalu: "bg-info",
-  "Site Próprio": "bg-success",
 };
 
 type StateRow = {
@@ -31,19 +28,19 @@ type StateRow = {
 };
 
 const STATE_DATA: StateRow[] = [
-  { uf: "SP", estado: "São Paulo", regiao: "Sudeste", vendas: { "Mercado Livre": 184230, Amazon: 142800, Shopee: 96540, Magalu: 71200, "Site Próprio": 48900 } },
-  { uf: "RJ", estado: "Rio de Janeiro", regiao: "Sudeste", vendas: { "Mercado Livre": 92140, Amazon: 78320, Shopee: 54200, Magalu: 38600, "Site Próprio": 22400 } },
-  { uf: "MG", estado: "Minas Gerais", regiao: "Sudeste", vendas: { "Mercado Livre": 76840, Amazon: 61200, Shopee: 49830, Magalu: 41200, "Site Próprio": 18700 } },
-  { uf: "RS", estado: "Rio Grande do Sul", regiao: "Sul", vendas: { "Mercado Livre": 58200, Amazon: 47100, Shopee: 31400, Magalu: 24800, "Site Próprio": 14200 } },
-  { uf: "PR", estado: "Paraná", regiao: "Sul", vendas: { "Mercado Livre": 52400, Amazon: 41800, Shopee: 28900, Magalu: 22100, "Site Próprio": 12600 } },
-  { uf: "SC", estado: "Santa Catarina", regiao: "Sul", vendas: { "Mercado Livre": 41200, Amazon: 34600, Shopee: 22400, Magalu: 17800, "Site Próprio": 10400 } },
-  { uf: "BA", estado: "Bahia", regiao: "Nordeste", vendas: { "Mercado Livre": 48200, Amazon: 32400, Shopee: 41200, Magalu: 26800, "Site Próprio": 9800 } },
-  { uf: "PE", estado: "Pernambuco", regiao: "Nordeste", vendas: { "Mercado Livre": 32800, Amazon: 21400, Shopee: 28200, Magalu: 18400, "Site Próprio": 6400 } },
-  { uf: "CE", estado: "Ceará", regiao: "Nordeste", vendas: { "Mercado Livre": 28400, Amazon: 18200, Shopee: 24800, Magalu: 16200, "Site Próprio": 5200 } },
-  { uf: "DF", estado: "Distrito Federal", regiao: "Centro-Oeste", vendas: { "Mercado Livre": 34200, Amazon: 28600, Shopee: 18400, Magalu: 14200, "Site Próprio": 9400 } },
-  { uf: "GO", estado: "Goiás", regiao: "Centro-Oeste", vendas: { "Mercado Livre": 24800, Amazon: 19400, Shopee: 14800, Magalu: 11200, "Site Próprio": 5800 } },
-  { uf: "PA", estado: "Pará", regiao: "Norte", vendas: { "Mercado Livre": 18200, Amazon: 11400, Shopee: 16800, Magalu: 9800, "Site Próprio": 3200 } },
-  { uf: "AM", estado: "Amazonas", regiao: "Norte", vendas: { "Mercado Livre": 12400, Amazon: 8200, Shopee: 11200, Magalu: 6800, "Site Próprio": 2400 } },
+  { uf: "SP", estado: "São Paulo", regiao: "Sudeste", vendas: { "Mercado Livre": 184230, Magalu: 71200 } },
+  { uf: "RJ", estado: "Rio de Janeiro", regiao: "Sudeste", vendas: { "Mercado Livre": 92140, Magalu: 38600 } },
+  { uf: "MG", estado: "Minas Gerais", regiao: "Sudeste", vendas: { "Mercado Livre": 76840, Magalu: 41200 } },
+  { uf: "RS", estado: "Rio Grande do Sul", regiao: "Sul", vendas: { "Mercado Livre": 58200, Magalu: 24800 } },
+  { uf: "PR", estado: "Paraná", regiao: "Sul", vendas: { "Mercado Livre": 52400, Magalu: 22100 } },
+  { uf: "SC", estado: "Santa Catarina", regiao: "Sul", vendas: { "Mercado Livre": 41200, Magalu: 17800 } },
+  { uf: "BA", estado: "Bahia", regiao: "Nordeste", vendas: { "Mercado Livre": 48200, Magalu: 26800 } },
+  { uf: "PE", estado: "Pernambuco", regiao: "Nordeste", vendas: { "Mercado Livre": 32800, Magalu: 18400 } },
+  { uf: "CE", estado: "Ceará", regiao: "Nordeste", vendas: { "Mercado Livre": 28400, Magalu: 16200 } },
+  { uf: "DF", estado: "Distrito Federal", regiao: "Centro-Oeste", vendas: { "Mercado Livre": 34200, Magalu: 14200 } },
+  { uf: "GO", estado: "Goiás", regiao: "Centro-Oeste", vendas: { "Mercado Livre": 24800, Magalu: 11200 } },
+  { uf: "PA", estado: "Pará", regiao: "Norte", vendas: { "Mercado Livre": 18200, Magalu: 9800 } },
+  { uf: "AM", estado: "Amazonas", regiao: "Norte", vendas: { "Mercado Livre": 12400, Magalu: 6800 } },
 ];
 
 const fmtBRL = (v: number) =>
@@ -79,7 +76,7 @@ function PerformancePage() {
 function VisaoGeral() {
   const totals = useMemo(() => {
     const byMkt: Record<Marketplace, number> = {
-      "Mercado Livre": 0, Amazon: 0, Shopee: 0, Magalu: 0, "Site Próprio": 0,
+      "Mercado Livre": 0, Magalu: 0,
     };
     let total = 0;
     for (const row of STATE_DATA) {
@@ -147,7 +144,7 @@ function Geografia() {
 
   const mktTotalsInScope = useMemo(() => {
     const t: Record<Marketplace, number> = {
-      "Mercado Livre": 0, Amazon: 0, Shopee: 0, Magalu: 0, "Site Próprio": 0,
+      "Mercado Livre": 0, Magalu: 0,
     };
     for (const r of filtered) for (const m of MARKETPLACES) t[m] += r.vendas[m];
     return t;
