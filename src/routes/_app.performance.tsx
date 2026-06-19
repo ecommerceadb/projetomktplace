@@ -144,7 +144,7 @@ function Geografia() {
 
   const mktTotalsInScope = useMemo(() => {
     const t: Record<Marketplace, number> = {
-      "Mercado Livre": 0, Amazon: 0, Shopee: 0, Magalu: 0, "Site Próprio": 0,
+      "Mercado Livre": 0, Magalu: 0,
     };
     for (const r of filtered) for (const m of MARKETPLACES) t[m] += r.vendas[m];
     return t;
