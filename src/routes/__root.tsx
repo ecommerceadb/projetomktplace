@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import logoAsset from "../assets/amigos-do-bem-logo.webp.asset.json";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,20 +78,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Amigos do Bem · Painel de Operações" },
+      {
+        name: "description",
+        content:
+          "Painel de operações do marketplace Amigos do Bem: gestão de catálogo, performance, estoque e Gerente IA.",
+      },
+      { name: "author", content: "Amigos do Bem" },
+      { name: "theme-color", content: "#0F172A" },
+      { property: "og:title", content: "Amigos do Bem · Painel de Operações" },
+      {
+        property: "og:description",
+        content:
+          "Painel de operações do marketplace Amigos do Bem: gestão de catálogo, performance, estoque e Gerente IA.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: logoAsset.url },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Amigos do Bem · Painel de Operações" },
+      { name: "twitter:image", content: logoAsset.url },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/webp", href: logoAsset.url },
+      { rel: "shortcut icon", type: "image/webp", href: logoAsset.url },
+      { rel: "apple-touch-icon", href: logoAsset.url },
     ],
   }),
   shellComponent: RootShell,
