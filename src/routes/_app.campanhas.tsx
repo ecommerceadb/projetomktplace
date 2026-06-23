@@ -145,21 +145,17 @@ function KpiCard({
   const trendColor = trend === "down" ? "text-danger" : "text-success";
   const TrendIcon = trend === "down" ? ArrowDown : ArrowUp;
   return (
-    <div className="rounded-xl bg-card border border-border p-4 shadow-sm">
-      <div className="flex items-start gap-3">
-        <div className={`size-10 rounded-lg flex items-center justify-center shrink-0 ${color}`}>{icon}</div>
-        <div className="min-w-0 flex-1">
-          <div className="text-xs font-medium text-muted-foreground">{label}</div>
-          <div className="text-xl font-bold text-foreground mt-0.5 truncate">{value}</div>
-          {delta ? (
-            <div className={`flex items-center gap-1 text-xs font-semibold mt-1 ${trendColor}`}>
-              <TrendIcon className="size-3" />
-              {delta}
-              <span className="text-muted-foreground font-normal">vs período anterior</span>
-            </div>
-          ) : null}
+    <div className="rounded-xl bg-card border border-border p-4 shadow-sm flex flex-col items-center text-center">
+      <div className={`size-10 rounded-lg flex items-center justify-center shrink-0 ${color}`}>{icon}</div>
+      <div className="text-xs font-medium text-muted-foreground mt-2">{label}</div>
+      <div className="text-xl font-bold text-foreground mt-0.5 truncate max-w-full">{value}</div>
+      {delta ? (
+        <div className={`flex items-center justify-center gap-1 text-xs font-semibold mt-1 ${trendColor}`}>
+          <TrendIcon className="size-3" />
+          {delta}
+          <span className="text-muted-foreground font-normal">vs período anterior</span>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
