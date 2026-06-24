@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 import { Bell, HelpCircle, Calendar } from "lucide-react";
 
+function formatToday() {
+  const d = new Date();
+  const s = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+  // "23 de maio de 2025" -> capitalize month
+  return s.replace(/ de (\p{L})/u, (_, c) => ` de ${c.toUpperCase()}`);
+}
+
 export function TopBar({ title, subtitle, right }: { title: string; subtitle?: string; right?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
@@ -12,7 +19,7 @@ export function TopBar({ title, subtitle, right }: { title: string; subtitle?: s
         {right}
         <button className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-accent">
           <Calendar className="size-4" />
-          23 de Maio de 2025
+          {formatToday()}
         </button>
         <button className="relative size-9 inline-flex items-center justify-center rounded-md border border-border bg-card hover:bg-accent">
           <Bell className="size-4" />
