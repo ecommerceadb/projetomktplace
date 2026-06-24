@@ -3,8 +3,15 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   PieChart, Pie, Cell,
 } from "recharts";
+import { useNavigate } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
+
+const MARKETPLACE_OPTIONS = [
+  { value: "consolidado", label: "Visão Consolidada", to: "/" as const },
+  { value: "ml", label: "Mercado Livre", to: "/mercado-livre" as const },
+  { value: "magalu", label: "Magazine Luiza", to: "/magazine-luiza" as const },
+];
 
 export type MarketplaceKind = "ml" | "magalu";
 
@@ -45,10 +52,30 @@ export function MarketplaceDashboard(p: MarketplaceDashboardProps) {
   const accentBg = p.accent === "yellow" ? "bg-brand-yellow" : "bg-info";
   const accentSoft = p.accent === "yellow" ? "bg-brand-yellow/15" : "bg-info/10";
   const lineColor = p.accent === "yellow" ? "var(--brand-yellow)" : "var(--info)";
+  const navigate = useNavigate();
+  const currentValue = p.kind === "ml" ? "ml" : "magalu";
+
+  const selector = (
+    <label className="inline-flex items-center gap-2 text-sm">
+      <span className="text-muted-foreground">Marketplace:</span>
+      <select
+        value={currentValue}
+        onChange={(e) => {
+          const opt = MARKETPLACE_OPTIONS.find((o) => o.value === e.target.value);
+          if (opt) navigate({ to: opt.to });
+        }}
+        className="rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
+      >
+        {MARKETPLACE_OPTIONS.map((o) => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+    </label>
+  );
 
   return (
     <>
-      <TopBar title={p.name} subtitle={p.subtitle ?? "Dashboard de operações"} />
+      <TopBar title={p.name} subtitle={p.subtitle ?? "Dashboard de operações"} right={selector} />
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-6 border-b border-border">
