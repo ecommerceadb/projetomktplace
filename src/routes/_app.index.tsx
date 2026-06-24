@@ -56,7 +56,7 @@ function Dashboard() {
             <select className="rounded-md border border-border bg-card px-3 py-2 text-sm font-medium">
               <option>Visão Consolidada</option>
               <option>Mercado Livre</option>
-              <option>Magalu</option>
+              <option>Magazine Luiza</option>
             </select>
           </div>
         }
@@ -120,7 +120,7 @@ function Dashboard() {
                 ]}
               />
               <MarketplaceMiniCard
-                name="magalu"
+                name="Magazine Luiza"
                 tone="blue"
                 metrics={[
                   { k: "Faturamento", v: "R$ 70.180", d: "5,2%" },
@@ -161,7 +161,7 @@ function Dashboard() {
                   </LineChart>
                 </ResponsiveContainer>
               </ChartBlock>
-              <ChartBlock title="Magalu" right={<span className="text-success text-xs font-semibold">R$ 70.180 ↑ 5,2%</span>}>
+              <ChartBlock title="Magazine Luiza" right={<span className="text-success text-xs font-semibold">R$ 70.180 ↑ 5,2%</span>}>
                 <ResponsiveContainer width="100%" height={180}>
                   <LineChart data={mgData}>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.4} />
@@ -181,7 +181,7 @@ function Dashboard() {
                     <Tooltip />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
                     <Line type="monotone" dataKey="ml" name="Mercado Livre" stroke="var(--brand-yellow)" strokeWidth={2} />
-                    <Line type="monotone" dataKey="mg" name="Magalu" stroke="var(--info)" strokeWidth={2} />
+                    <Line type="monotone" dataKey="mg" name="Magazine Luiza" stroke="var(--info)" strokeWidth={2} />
                   </LineChart>
                 </ResponsiveContainer>
               </ChartBlock>
@@ -196,7 +196,7 @@ function Dashboard() {
                 "5 Buy Box perdidas",
                 "2 anúncios pausados",
               ]} />
-              <PriorityCard title="Magalu" tone="warning" badge="ATENÇÃO" items={[
+              <PriorityCard title="Magazine Luiza" tone="warning" badge="ATENÇÃO" items={[
                 "12 produtos com estoque crítico",
                 "Conversão caiu 9%",
                 "8 produtos com preço acima da média",
@@ -222,7 +222,7 @@ function Dashboard() {
 
             <div className="flex gap-1 rounded-md bg-white/10 p-1 text-xs mb-4">
               <button className="rounded px-2 py-1 text-white/80">Mercado Livre</button>
-              <button className="rounded px-2 py-1 text-white/80">Magalu</button>
+              <button className="rounded px-2 py-1 text-white/80">Magazine Luiza</button>
               <button className="rounded px-2 py-1 bg-white text-brand-navy font-semibold">Consolidado</button>
             </div>
 
@@ -235,7 +235,7 @@ function Dashboard() {
 
             <div className="rounded-lg bg-white/5 border border-white/10 p-3 text-xs mb-4">
               <div className="font-semibold text-brand-yellow mb-1">Prioridade máxima:</div>
-              <p className="text-white/85">Repor estoque dos SKUs ML123 e MAG456 e ajustar preço de 8 produtos na Magalu.</p>
+              <p className="text-white/85">Repor estoque dos SKUs ML123 e MAG456 e ajustar preço de 8 produtos na Magazine Luiza.</p>
             </div>
 
             <Link to="/chat" className="block text-center rounded-md bg-brand-yellow text-brand-navy font-semibold text-sm py-2.5 hover:brightness-105">
@@ -262,7 +262,7 @@ function Dashboard() {
             <ul className="space-y-3">
               {[
                 { n: "Relatório de Estoque - Mercado Livre", d: "23/05/2025 09:15", r: "2.356 registros", s: "success" as const, sl: "Sucesso" },
-                { n: "Relatório de Vendas - Magalu", d: "23/05/2025 08:50", r: "1.812 registros", s: "success" as const, sl: "Sucesso" },
+                { n: "Relatório de Vendas - Magazine Luiza", d: "23/05/2025 08:50", r: "1.812 registros", s: "success" as const, sl: "Sucesso" },
                 { n: "Relatório de Anúncios - Mercado Livre", d: "22/05/2025 17:30", r: "3.842 registros", s: "warning" as const, sl: "Avisos" },
               ].map((i) => (
                 <li key={i.n} className="flex items-start gap-3">

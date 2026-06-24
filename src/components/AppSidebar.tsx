@@ -84,8 +84,8 @@ export function AppSidebar() {
             <span className="opacity-80">Mercado Livre</span>
           </div>
           <div className="flex items-center justify-between rounded-md bg-white/95 text-sidebar px-3 py-2 text-xs font-semibold">
-            <span>magalu</span>
-            <span className="opacity-80">Magalu</span>
+            <span>magazine</span>
+            <span className="opacity-80">Magazine Luiza</span>
           </div>
           <div className="flex items-center justify-center gap-2 rounded-md border border-white/15 px-3 py-2 text-xs font-medium text-sidebar-foreground/90">
             <LayoutDashboard className="size-3.5" />
