@@ -3,8 +3,15 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   PieChart, Pie, Cell,
 } from "recharts";
+import { useNavigate } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
+
+const MARKETPLACE_OPTIONS = [
+  { value: "consolidado", label: "Visão Consolidada", to: "/" as const },
+  { value: "ml", label: "Mercado Livre", to: "/mercado-livre" as const },
+  { value: "magalu", label: "Magazine Luiza", to: "/magazine-luiza" as const },
+];
 
 export type MarketplaceKind = "ml" | "magalu";
 
