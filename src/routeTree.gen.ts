@@ -20,6 +20,8 @@ import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
 import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
 import { Route as AppPerformanceRouteImport } from './routes/_app.performance'
 import { Route as AppOportunidadesRouteImport } from './routes/_app.oportunidades'
+import { Route as AppMercadoLivreRouteImport } from './routes/_app.mercado-livre'
+import { Route as AppMagazineLuizaRouteImport } from './routes/_app.magazine-luiza'
 import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
 import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
 import { Route as AppConcorrenciaRouteImport } from './routes/_app.concorrencia'
@@ -82,6 +84,16 @@ const AppPerformanceRoute = AppPerformanceRouteImport.update({
 const AppOportunidadesRoute = AppOportunidadesRouteImport.update({
   id: '/oportunidades',
   path: '/oportunidades',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMercadoLivreRoute = AppMercadoLivreRouteImport.update({
+  id: '/mercado-livre',
+  path: '/mercado-livre',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMagazineLuizaRoute = AppMagazineLuizaRouteImport.update({
+  id: '/magazine-luiza',
+  path: '/magazine-luiza',
   getParentRoute: () => AppRoute,
 } as any)
 const AppEstoqueRoute = AppEstoqueRouteImport.update({
@@ -147,6 +159,8 @@ export interface FileRoutesByFullPath {
   '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
+  '/magazine-luiza': typeof AppMagazineLuizaRoute
+  '/mercado-livre': typeof AppMercadoLivreRoute
   '/oportunidades': typeof AppOportunidadesRoute
   '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
@@ -168,6 +182,8 @@ export interface FileRoutesByTo {
   '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
+  '/magazine-luiza': typeof AppMagazineLuizaRoute
+  '/mercado-livre': typeof AppMercadoLivreRoute
   '/oportunidades': typeof AppOportunidadesRoute
   '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
@@ -190,6 +206,8 @@ export interface FileRoutesById {
   '/_app/concorrencia': typeof AppConcorrenciaRoute
   '/_app/configuracoes': typeof AppConfiguracoesRoute
   '/_app/estoque': typeof AppEstoqueRoute
+  '/_app/magazine-luiza': typeof AppMagazineLuizaRoute
+  '/_app/mercado-livre': typeof AppMercadoLivreRoute
   '/_app/oportunidades': typeof AppOportunidadesRoute
   '/_app/performance': typeof AppPerformanceRoute
   '/_app/planejamento': typeof AppPlanejamentoRoute
@@ -214,6 +232,8 @@ export interface FileRouteTypes {
     | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
+    | '/magazine-luiza'
+    | '/mercado-livre'
     | '/oportunidades'
     | '/performance'
     | '/planejamento'
@@ -235,6 +255,8 @@ export interface FileRouteTypes {
     | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
+    | '/magazine-luiza'
+    | '/mercado-livre'
     | '/oportunidades'
     | '/performance'
     | '/planejamento'
@@ -256,6 +278,8 @@ export interface FileRouteTypes {
     | '/_app/concorrencia'
     | '/_app/configuracoes'
     | '/_app/estoque'
+    | '/_app/magazine-luiza'
+    | '/_app/mercado-livre'
     | '/_app/oportunidades'
     | '/_app/performance'
     | '/_app/planejamento'
@@ -352,6 +376,20 @@ declare module '@tanstack/react-router' {
       path: '/oportunidades'
       fullPath: '/oportunidades'
       preLoaderRoute: typeof AppOportunidadesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mercado-livre': {
+      id: '/_app/mercado-livre'
+      path: '/mercado-livre'
+      fullPath: '/mercado-livre'
+      preLoaderRoute: typeof AppMercadoLivreRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/magazine-luiza': {
+      id: '/_app/magazine-luiza'
+      path: '/magazine-luiza'
+      fullPath: '/magazine-luiza'
+      preLoaderRoute: typeof AppMagazineLuizaRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/estoque': {
@@ -460,6 +498,8 @@ interface AppRouteChildren {
   AppConcorrenciaRoute: typeof AppConcorrenciaRoute
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppEstoqueRoute: typeof AppEstoqueRoute
+  AppMagazineLuizaRoute: typeof AppMagazineLuizaRoute
+  AppMercadoLivreRoute: typeof AppMercadoLivreRoute
   AppOportunidadesRoute: typeof AppOportunidadesRoute
   AppPerformanceRoute: typeof AppPerformanceRoute
   AppPlanejamentoRoute: typeof AppPlanejamentoRoute
@@ -477,6 +517,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppConcorrenciaRoute: AppConcorrenciaRoute,
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppEstoqueRoute: AppEstoqueRoute,
+  AppMagazineLuizaRoute: AppMagazineLuizaRoute,
+  AppMercadoLivreRoute: AppMercadoLivreRoute,
   AppOportunidadesRoute: AppOportunidadesRoute,
   AppPerformanceRoute: AppPerformanceRoute,
   AppPlanejamentoRoute: AppPlanejamentoRoute,
