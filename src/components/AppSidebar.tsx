@@ -79,18 +79,18 @@ export function AppSidebar() {
           MARKETPLACES
         </div>
         <div className="px-2 space-y-2">
-          <div className="flex items-center justify-between rounded-md bg-brand-yellow text-sidebar px-3 py-2 text-xs font-semibold">
+          <Link to="/mercado-livre" className="flex items-center justify-between rounded-md bg-brand-yellow text-sidebar px-3 py-2 text-xs font-semibold hover:brightness-105">
             <span>mercado livre</span>
             <span className="opacity-80">Mercado Livre</span>
-          </div>
-          <div className="flex items-center justify-between rounded-md bg-white/95 text-sidebar px-3 py-2 text-xs font-semibold">
+          </Link>
+          <Link to="/magazine-luiza" className="flex items-center justify-between rounded-md bg-white/95 text-sidebar px-3 py-2 text-xs font-semibold hover:brightness-105">
             <span>magazine</span>
             <span className="opacity-80">Magazine Luiza</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 rounded-md border border-white/15 px-3 py-2 text-xs font-medium text-sidebar-foreground/90">
+          </Link>
+          <Link to="/" className="flex items-center justify-center gap-2 rounded-md border border-white/15 px-3 py-2 text-xs font-medium text-sidebar-foreground/90 hover:bg-white/5">
             <LayoutDashboard className="size-3.5" />
             Visão Consolidada
-          </div>
+          </Link>
         </div>
       </nav>
 
