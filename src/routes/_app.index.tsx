@@ -73,20 +73,20 @@ function Dashboard() {
             <div className="text-xs opacity-80">Todos os marketplaces</div>
           </div>
         </button>
-        <button className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-brand-yellow">
+        <Link to="/mercado-livre" className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-brand-yellow transition-colors">
           <div className="size-10 rounded-lg bg-brand-yellow/20 flex items-center justify-center font-bold text-xs">ML</div>
           <div>
-            <div className="font-semibold text-foreground">mercado livre</div>
-            <div className="text-xs text-muted-foreground">Mercado Livre</div>
+            <div className="font-semibold text-foreground">Mercado Livre</div>
+            <div className="text-xs text-muted-foreground">Dashboard de operações</div>
           </div>
-        </button>
-        <button className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-info">
+        </Link>
+        <Link to="/magazine-luiza" className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-info transition-colors">
           <div className="size-10 rounded-lg bg-info/15 flex items-center justify-center font-bold text-xs text-info">MG</div>
           <div>
-            <div className="font-semibold text-foreground">magalu</div>
-            <div className="text-xs text-muted-foreground">Magazine Luiza</div>
+            <div className="font-semibold text-foreground">Magazine Luiza</div>
+            <div className="text-xs text-muted-foreground">Dashboard de operações</div>
           </div>
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-12 gap-6">
