@@ -33,7 +33,7 @@ function Estoque() {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-muted-foreground border-b border-border">
-              <th className="py-2">Produto</th><th className="py-2">SKU</th><th className="py-2">Mercado Livre</th><th className="py-2">Magalu</th><th className="py-2">Status</th>
+              <th className="py-2">Produto</th><th className="py-2">SKU</th><th className="py-2">Mercado Livre</th><th className="py-2">Magazine Luiza</th><th className="py-2">Status</th>
             </tr>
           </thead>
           <tbody>
