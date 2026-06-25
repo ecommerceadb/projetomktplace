@@ -64,28 +64,37 @@ function Dashboard() {
 
       {/* Marketplace selector tiles */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <button className="rounded-xl border-2 border-brand-navy bg-brand-navy text-white p-4 flex items-center gap-3 shadow-sm text-left">
-          <div className="size-10 rounded-lg bg-white/10 flex items-center justify-center">
-            <Sparkles className="size-5" />
+        <Link to="/" className="rounded-xl border-2 border-brand-navy bg-brand-navy text-white p-4 flex items-center justify-between shadow-sm hover:brightness-110 transition">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-lg bg-white/10 flex items-center justify-center">
+              <Sparkles className="size-5" />
+            </div>
+            <div>
+              <div className="font-semibold">Visão Consolidada</div>
+              <div className="text-xs opacity-80">Todos os marketplaces</div>
+            </div>
           </div>
-          <div>
-            <div className="font-semibold">Visão Consolidada</div>
-            <div className="text-xs opacity-80">Todos os marketplaces</div>
-          </div>
-        </button>
-        <Link to="/mercado-livre" className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-brand-yellow transition-colors">
-          <div className="size-10 rounded-lg bg-brand-yellow/20 flex items-center justify-center font-bold text-xs">ML</div>
-          <div>
-            <div className="font-semibold text-foreground">Mercado Livre</div>
-            <div className="text-xs text-muted-foreground">Dashboard de operações</div>
-          </div>
+          <ChevronRight className="size-5 opacity-70" />
         </Link>
-        <Link to="/magazine-luiza" className="rounded-xl border border-border bg-card p-4 flex items-center gap-3 shadow-sm text-left hover:border-info transition-colors">
-          <div className="size-10 rounded-lg bg-info/15 flex items-center justify-center font-bold text-xs text-info">MG</div>
-          <div>
-            <div className="font-semibold text-foreground">Magazine Luiza</div>
-            <div className="text-xs text-muted-foreground">Dashboard de operações</div>
+        <Link to="/mercado-livre" className="rounded-xl border border-border bg-card p-4 flex items-center justify-between shadow-sm hover:border-brand-yellow hover:bg-brand-yellow/5 transition-colors">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-lg bg-brand-yellow/20 flex items-center justify-center font-bold text-xs text-brand-orange">ML</div>
+            <div>
+              <div className="font-semibold text-foreground">Mercado Livre</div>
+              <div className="text-xs text-muted-foreground">Dashboard de operações</div>
+            </div>
           </div>
+          <ChevronRight className="size-5 text-muted-foreground" />
+        </Link>
+        <Link to="/magazine-luiza" className="rounded-xl border border-border bg-card p-4 flex items-center justify-between shadow-sm hover:border-info hover:bg-info/5 transition-colors">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-lg bg-info/15 flex items-center justify-center font-bold text-xs text-info">MG</div>
+            <div>
+              <div className="font-semibold text-foreground">Magazine Luiza</div>
+              <div className="text-xs text-muted-foreground">Dashboard de operações</div>
+            </div>
+          </div>
+          <ChevronRight className="size-5 text-muted-foreground" />
         </Link>
       </div>
 
