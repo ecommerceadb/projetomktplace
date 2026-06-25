@@ -112,38 +112,42 @@ function Dashboard() {
           {/* Marketplace performance split */}
           <Panel title="Desempenho por Marketplace">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <MarketplaceMiniCard
-                name="mercado livre"
-                tone="yellow"
-                metrics={[
-                  { k: "Faturamento", v: "R$ 180.250", d: "18,7%" },
-                  { k: "Pedidos", v: "3.201", d: "14,5%" },
-                  { k: "Conversão", v: "2,62%", d: "-3,1%", down: true },
-                  { k: "Buy Box", v: "87%", d: "-2 p.p.", down: true },
-                ]}
-                secondary={[
-                  { k: "Anúncios pausados", v: "32", d: "↑ 6" },
-                  { k: "Produtos sem estoque", v: "18", d: "↓ -4", down: true },
-                  { k: "Estoque crítico", v: "27", d: "↑ 3" },
-                  { k: "Reputação", v: "4,8", d: "↑ 0,1" },
-                ]}
-              />
-              <MarketplaceMiniCard
-                name="Magazine Luiza"
-                tone="blue"
-                metrics={[
-                  { k: "Faturamento", v: "R$ 70.180", d: "5,2%" },
-                  { k: "Pedidos", v: "1.366", d: "3,4%" },
-                  { k: "Conversão", v: "2,11%", d: "-9,2%", down: true },
-                  { k: "Campanhas ativas", v: "8", d: "↑ 1" },
-                ]}
-                secondary={[
-                  { k: "Produtos c/ estoque crítico", v: "46", d: "↑ 8" },
-                  { k: "Anúncios pausados", v: "14", d: "↓ -2", down: true },
-                  { k: "Reputação", v: "4,6", d: "↑ 0,2" },
-                  { k: "Avaliação média", v: "4,7", d: "↑ 0,1" },
-                ]}
-              />
+              <Link to="/mercado-livre">
+                <MarketplaceMiniCard
+                  name="mercado livre"
+                  tone="yellow"
+                  metrics={[
+                    { k: "Faturamento", v: "R$ 180.250", d: "18,7%" },
+                    { k: "Pedidos", v: "3.201", d: "14,5%" },
+                    { k: "Conversão", v: "2,62%", d: "-3,1%", down: true },
+                    { k: "Buy Box", v: "87%", d: "-2 p.p.", down: true },
+                  ]}
+                  secondary={[
+                    { k: "Anúncios pausados", v: "32", d: "↑ 6" },
+                    { k: "Produtos sem estoque", v: "18", d: "↓ -4", down: true },
+                    { k: "Estoque crítico", v: "27", d: "↑ 3" },
+                    { k: "Reputação", v: "4,8", d: "↑ 0,1" },
+                  ]}
+                />
+              </Link>
+              <Link to="/magazine-luiza">
+                <MarketplaceMiniCard
+                  name="Magazine Luiza"
+                  tone="blue"
+                  metrics={[
+                    { k: "Faturamento", v: "R$ 70.180", d: "5,2%" },
+                    { k: "Pedidos", v: "1.366", d: "3,4%" },
+                    { k: "Conversão", v: "2,11%", d: "-9,2%", down: true },
+                    { k: "Campanhas ativas", v: "8", d: "↑ 1" },
+                  ]}
+                  secondary={[
+                    { k: "Produtos c/ estoque crítico", v: "46", d: "↑ 8" },
+                    { k: "Anúncios pausados", v: "14", d: "↓ -2", down: true },
+                    { k: "Reputação", v: "4,6", d: "↑ 0,2" },
+                    { k: "Avaliação média", v: "4,7", d: "↑ 0,1" },
+                  ]}
+                />
+              </Link>
             </div>
           </Panel>
 
