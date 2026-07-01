@@ -22,7 +22,7 @@ import logoAsset from "@/assets/amigos-do-bem-logo.webp.asset.json";
 
 type NavItem = { to: string; label: string; icon: ComponentType<SVGProps<SVGSVGElement>> };
 
-const nav: NavItem[] = [
+export const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/estoque", label: "Estoque", icon: Package },
   { to: "/cadastro", label: "Cadastro", icon: ClipboardList },
