@@ -7,7 +7,6 @@ import {
   TrendingUp,
   Search,
   Megaphone,
-  Database,
   FileText,
   Bot,
   AlertTriangle,
