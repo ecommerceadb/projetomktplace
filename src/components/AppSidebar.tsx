@@ -30,7 +30,6 @@ export const nav: NavItem[] = [
   { to: "/performance", label: "Performance", icon: TrendingUp },
   { to: "/seo", label: "SEO Marketplace", icon: Search },
   { to: "/campanhas", label: "Campanhas", icon: Megaphone },
-  { to: "/central-dados", label: "Central de Dados", icon: Database },
   { to: "/relatorios", label: "Relatórios", icon: FileText },
   { to: "/chat", label: "Gerente de Operações IA", icon: Bot },
   { to: "/central-alertas", label: "Central de Alertas", icon: AlertTriangle },
