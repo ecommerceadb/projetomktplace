@@ -5,7 +5,6 @@ import {
   Package,
   Percent,
   Tag,
-  Upload,
   Bot,
   Sparkles,
   FileText,
