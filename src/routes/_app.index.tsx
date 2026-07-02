@@ -5,7 +5,6 @@ import {
   Package,
   Percent,
   Tag,
-  Upload,
   Bot,
   Sparkles,
   FileText,
@@ -256,17 +255,6 @@ function Dashboard() {
             </Link>
           </div>
 
-          <Panel title="Central de Dados">
-            <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
-              <Upload className="size-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm font-medium text-foreground">Arraste e solte seus arquivos aqui</p>
-              <p className="text-xs text-muted-foreground mt-1">ou clique para selecionar</p>
-              <p className="text-[11px] text-muted-foreground mt-3">Formatos suportados: XLSX, XLS, CSV</p>
-            </div>
-            <Link to="/central-dados" className="mt-4 block text-center rounded-md bg-brand-navy text-white font-medium text-sm py-2 hover:opacity-90">
-              Acessar Central de Dados
-            </Link>
-          </Panel>
 
           <Panel
             title="Últimas importações"
