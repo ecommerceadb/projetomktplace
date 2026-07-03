@@ -25,6 +25,7 @@ import { Route as AppMagazineLuizaRouteImport } from './routes/_app.magazine-lui
 import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
 import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
 import { Route as AppConcorrenciaRouteImport } from './routes/_app.concorrencia'
+import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
 import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
 import { Route as AppCatalogoRouteImport } from './routes/_app.catalogo'
 import { Route as AppCampanhasRouteImport } from './routes/_app.campanhas'
@@ -110,6 +111,11 @@ const AppConcorrenciaRoute = AppConcorrenciaRouteImport.update({
   path: '/concorrencia',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
+  id: '/central-dados',
+  path: '/central-dados',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCentralAlertasRoute = AppCentralAlertasRouteImport.update({
   id: '/central-alertas',
   path: '/central-alertas',
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/campanhas': typeof AppCampanhasRoute
   '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
+  '/central-dados': typeof AppCentralDadosRoute
   '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/campanhas': typeof AppCampanhasRoute
   '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
+  '/central-dados': typeof AppCentralDadosRoute
   '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/_app/campanhas': typeof AppCampanhasRoute
   '/_app/catalogo': typeof AppCatalogoRoute
   '/_app/central-alertas': typeof AppCentralAlertasRoute
+  '/_app/central-dados': typeof AppCentralDadosRoute
   '/_app/concorrencia': typeof AppConcorrenciaRoute
   '/_app/configuracoes': typeof AppConfiguracoesRoute
   '/_app/estoque': typeof AppEstoqueRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/campanhas'
     | '/catalogo'
     | '/central-alertas'
+    | '/central-dados'
     | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/campanhas'
     | '/catalogo'
     | '/central-alertas'
+    | '/central-dados'
     | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/_app/campanhas'
     | '/_app/catalogo'
     | '/_app/central-alertas'
+    | '/_app/central-dados'
     | '/_app/concorrencia'
     | '/_app/configuracoes'
     | '/_app/estoque'
@@ -401,6 +413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppConcorrenciaRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/central-dados': {
+      id: '/_app/central-dados'
+      path: '/central-dados'
+      fullPath: '/central-dados'
+      preLoaderRoute: typeof AppCentralDadosRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/central-alertas': {
       id: '/_app/central-alertas'
       path: '/central-alertas'
@@ -475,6 +494,7 @@ interface AppRouteChildren {
   AppCampanhasRoute: typeof AppCampanhasRoute
   AppCatalogoRoute: typeof AppCatalogoRoute
   AppCentralAlertasRoute: typeof AppCentralAlertasRoute
+  AppCentralDadosRoute: typeof AppCentralDadosRoute
   AppConcorrenciaRoute: typeof AppConcorrenciaRoute
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppEstoqueRoute: typeof AppEstoqueRoute
@@ -493,6 +513,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCampanhasRoute: AppCampanhasRoute,
   AppCatalogoRoute: AppCatalogoRoute,
   AppCentralAlertasRoute: AppCentralAlertasRoute,
+  AppCentralDadosRoute: AppCentralDadosRoute,
   AppConcorrenciaRoute: AppConcorrenciaRoute,
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppEstoqueRoute: AppEstoqueRoute,
