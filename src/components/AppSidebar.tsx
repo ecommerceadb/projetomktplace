@@ -13,6 +13,7 @@ import {
   Lightbulb,
   CalendarRange,
   BookOpen,
+  Database,
   Settings,
   ChevronDown,
 } from "lucide-react";
