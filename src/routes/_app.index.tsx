@@ -23,6 +23,7 @@ import {
 } from "recharts";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
 import { TopBar } from "@/components/TopBar";
+import { PeriodFilter } from "@/components/PeriodFilter";
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
