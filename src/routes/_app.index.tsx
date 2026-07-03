@@ -23,6 +23,7 @@ import {
 } from "recharts";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
 import { TopBar } from "@/components/TopBar";
+import { PeriodFilter } from "@/components/PeriodFilter";
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
@@ -50,13 +51,16 @@ function Dashboard() {
       <TopBar
         title="Dashboard"
         right={
-          <div className="hidden md:flex items-center gap-2 text-sm">
-            <span className="text-muted-foreground">Marketplace:</span>
-            <select className="rounded-md border border-border bg-card px-3 py-2 text-sm font-medium">
-              <option>Visão Consolidada</option>
-              <option>Mercado Livre</option>
-              <option>Magazine Luiza</option>
-            </select>
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <PeriodFilter />
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-muted-foreground">Marketplace:</span>
+              <select className="rounded-md border border-border bg-card px-3 py-2 text-sm font-medium">
+                <option>Visão Consolidada</option>
+                <option>Mercado Livre</option>
+                <option>Magazine Luiza</option>
+              </select>
+            </div>
           </div>
         }
       />
