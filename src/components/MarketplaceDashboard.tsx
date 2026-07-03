@@ -6,6 +6,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { TopBar } from "@/components/TopBar";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
+import { PeriodFilter } from "@/components/PeriodFilter";
 
 const MARKETPLACE_OPTIONS = [
   { value: "consolidado", label: "Visão Consolidada", to: "/" as const },
