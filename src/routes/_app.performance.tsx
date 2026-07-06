@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { DollarSign, ShoppingCart, TrendingUp, MapPin, Download } from "lucide-react";
+import { DollarSign, ShoppingCart, TrendingUp, MapPin, Download, Tag, Trophy } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -43,6 +43,39 @@ const STATE_DATA: StateRow[] = [
   { uf: "AM", estado: "Amazonas", regiao: "Norte", vendas: { "Mercado Livre": 12400, Magalu: 6800 } },
 ];
 
+const CATEGORIAS = ["Castanhas", "Costuráveis", "Kits"] as const;
+type Categoria = (typeof CATEGORIAS)[number];
+
+type ProdutoCat = {
+  sku: string;
+  nome: string;
+  categoria: Categoria;
+  precoMedio: number;
+  // vendas (unidades) por UF no mês
+  vendasPorUf: Record<string, number>;
+};
+
+const PRODUTOS_CAT: ProdutoCat[] = [
+  { sku: "CJU100", nome: "Castanha de Caju 100g", categoria: "Castanhas", precoMedio: 20.9,
+    vendasPorUf: { SP: 820, RJ: 410, MG: 380, RS: 240, PR: 220, SC: 180, BA: 210, PE: 140, CE: 120, DF: 150, GO: 110, PA: 80, AM: 55 } },
+  { sku: "MC100", nome: "Mix de Castanhas 100g", categoria: "Castanhas", precoMedio: 22.9,
+    vendasPorUf: { SP: 610, RJ: 290, MG: 265, RS: 180, PR: 165, SC: 140, BA: 160, PE: 105, CE: 92, DF: 118, GO: 84, PA: 62, AM: 44 } },
+  { sku: "CAS200", nome: "Castanha do Pará 200g", categoria: "Castanhas", precoMedio: 32.9,
+    vendasPorUf: { SP: 340, RJ: 160, MG: 145, RS: 100, PR: 92, SC: 78, BA: 88, PE: 60, CE: 52, DF: 68, GO: 46, PA: 38, AM: 28 } },
+  { sku: "ECOBAG-MG", nome: "Ecobag Turma da Mônica", categoria: "Costuráveis", precoMedio: 29.9,
+    vendasPorUf: { SP: 180, RJ: 92, MG: 88, RS: 62, PR: 55, SC: 44, BA: 52, PE: 34, CE: 30, DF: 40, GO: 26, PA: 20, AM: 14 } },
+  { sku: "NEC-CAS", nome: "Necessaire Cordel", categoria: "Costuráveis", precoMedio: 24.9,
+    vendasPorUf: { SP: 130, RJ: 68, MG: 62, RS: 42, PR: 40, SC: 32, BA: 38, PE: 24, CE: 22, DF: 28, GO: 18, PA: 14, AM: 10 } },
+  { sku: "AVE-COR", nome: "Avental Cordel", categoria: "Costuráveis", precoMedio: 39.9,
+    vendasPorUf: { SP: 90, RJ: 46, MG: 42, RS: 30, PR: 28, SC: 22, BA: 26, PE: 18, CE: 16, DF: 20, GO: 14, PA: 10, AM: 7 } },
+  { sku: "KIT03", nome: "Kit Presente 3 Produtos", categoria: "Kits", precoMedio: 65.0,
+    vendasPorUf: { SP: 160, RJ: 82, MG: 74, RS: 52, PR: 48, SC: 40, BA: 45, PE: 30, CE: 26, DF: 34, GO: 22, PA: 18, AM: 12 } },
+  { sku: "KIT05", nome: "Kit Presente 5 Produtos", categoria: "Kits", precoMedio: 98.0,
+    vendasPorUf: { SP: 110, RJ: 56, MG: 50, RS: 34, PR: 32, SC: 26, BA: 30, PE: 20, CE: 18, DF: 24, GO: 15, PA: 12, AM: 8 } },
+  { sku: "KIT-NATAL", nome: "Kit Presente Natal", categoria: "Kits", precoMedio: 129.0,
+    vendasPorUf: { SP: 78, RJ: 40, MG: 36, RS: 24, PR: 22, SC: 18, BA: 21, PE: 14, CE: 12, DF: 17, GO: 11, PA: 8, AM: 5 } },
+];
+
 const fmtBRL = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtCompact = (v: number) =>
@@ -55,6 +88,10 @@ function PerformancePage() {
       <Tabs defaultValue="visao" className="space-y-4">
         <TabsList>
           <TabsTrigger value="visao">Visão Geral</TabsTrigger>
+          <TabsTrigger value="categorias">
+            <Tag className="size-3.5 mr-1.5" />
+            Categorias
+          </TabsTrigger>
           <TabsTrigger value="geografia">
             <MapPin className="size-3.5 mr-1.5" />
             Geografia
@@ -65,10 +102,166 @@ function PerformancePage() {
           <VisaoGeral />
         </TabsContent>
 
+        <TabsContent value="categorias" className="space-y-4">
+          <Categorias />
+        </TabsContent>
+
         <TabsContent value="geografia" className="space-y-4">
           <Geografia />
         </TabsContent>
       </Tabs>
+    </>
+  );
+}
+
+const MESES = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+const now = new Date();
+
+function Categorias() {
+  const [categoria, setCategoria] = useState<Categoria | "todas">("todas");
+  const [uf, setUf] = useState<string>("todas");
+  const [mes, setMes] = useState<string>(String(now.getMonth()));
+  const [ano, setAno] = useState<string>(String(now.getFullYear()));
+
+  const produtos = useMemo(() => {
+    return PRODUTOS_CAT
+      .filter((p) => categoria === "todas" || p.categoria === categoria)
+      .map((p) => {
+        const unidades = uf === "todas"
+          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
+          : (p.vendasPorUf[uf] ?? 0);
+        return { ...p, unidades, receita: unidades * p.precoMedio };
+      })
+      .sort((a, b) => b.unidades - a.unidades);
+  }, [categoria, uf]);
+
+  const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
+  const totalUnidades = produtos.reduce((s, p) => s + p.unidades, 0);
+  const lider = produtos[0];
+
+  const porCategoria = useMemo(() => {
+    return CATEGORIAS.map((cat) => {
+      const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
+        const unidades = uf === "todas"
+          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
+          : (p.vendasPorUf[uf] ?? 0);
+        return { ...p, unidades, receita: unidades * p.precoMedio };
+      }).sort((a, b) => b.unidades - a.unidades);
+      const receita = items.reduce((s, p) => s + p.receita, 0);
+      const unidades = items.reduce((s, p) => s + p.unidades, 0);
+      return { cat, items, receita, unidades, top: items[0] };
+    });
+  }, [uf]);
+
+  const maxUnid = Math.max(1, ...produtos.map((p) => p.unidades));
+
+  return (
+    <>
+      <Panel>
+        <div className="flex flex-wrap gap-3 items-end">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Categoria</label>
+            <Select value={categoria} onValueChange={(v) => setCategoria(v as Categoria | "todas")}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as categorias</SelectItem>
+                {CATEGORIAS.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Estado</label>
+            <Select value={uf} onValueChange={setUf}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todos os estados</SelectItem>
+                {STATE_DATA.map((s) => <SelectItem key={s.uf} value={s.uf}>{s.uf} — {s.estado}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Mês</label>
+            <Select value={mes} onValueChange={setMes}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {MESES.map((m, i) => <SelectItem key={m} value={String(i)}>{m}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Ano</label>
+            <Select value={ano} onValueChange={setAno}>
+              <SelectTrigger className="w-[110px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {[0, 1, 2].map((i) => {
+                  const y = String(now.getFullYear() - i);
+                  return <SelectItem key={y} value={y}>{y}</SelectItem>;
+                })}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button variant="outline" size="sm" className="ml-auto">
+            <Download className="size-3.5 mr-1.5" /> Exportar CSV
+          </Button>
+        </div>
+      </Panel>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <MetricCard label="Receita (recorte)" value={fmtBRL(totalReceita)} hint={`${totalUnidades.toLocaleString("pt-BR")} unidades`} icon={<DollarSign className="size-4" />} iconColor="bg-success/15 text-success" />
+        <MetricCard label="Produto líder" value={lider?.sku ?? "—"} hint={lider ? `${lider.nome} · ${lider.unidades} un.` : ""} icon={<Trophy className="size-4" />} iconColor="bg-brand-yellow/20 text-brand-orange" />
+        <MetricCard label="Categorias" value={String(categoria === "todas" ? CATEGORIAS.length : 1)} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {porCategoria.map(({ cat, items, receita, unidades, top }) => (
+          <Panel key={cat} title={cat}>
+            <div className="text-xs text-muted-foreground mb-3 flex items-center justify-between">
+              <span>{unidades.toLocaleString("pt-BR")} un. · {fmtBRL(receita)}</span>
+              {top && <Badge variant="muted">Top: {top.sku}</Badge>}
+            </div>
+            <div className="space-y-2">
+              {items.slice(0, 5).map((p) => (
+                <div key={p.sku} className="flex items-center justify-between text-sm">
+                  <div className="min-w-0">
+                    <div className="font-medium truncate">{p.nome}</div>
+                    <div className="text-[11px] text-muted-foreground">{p.sku}</div>
+                  </div>
+                  <div className="text-right tabular-nums">
+                    <div className="font-semibold">{p.unidades} un.</div>
+                    <div className="text-[11px] text-muted-foreground">{fmtBRL(p.receita)}</div>
+                  </div>
+                </div>
+              ))}
+              {items.length === 0 && <div className="text-xs text-muted-foreground">Sem vendas no recorte.</div>}
+            </div>
+          </Panel>
+        ))}
+      </div>
+
+      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${MESES[Number(mes)]}/${ano}`}>
+        <div className="space-y-3">
+          {produtos.map((p, idx) => (
+            <div key={p.sku}>
+              <div className="flex items-center justify-between text-sm mb-1">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="inline-flex items-center justify-center size-7 rounded-md bg-muted text-xs font-bold shrink-0">{idx + 1}</span>
+                  <span className="font-medium truncate">{p.nome}</span>
+                  <Badge variant="muted">{p.categoria}</Badge>
+                  <span className="text-[11px] text-muted-foreground">{p.sku}</span>
+                </div>
+                <span className="text-muted-foreground font-semibold shrink-0 ml-3">{p.unidades} un. · {fmtBRL(p.receita)}</span>
+              </div>
+              <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-brand-yellow to-brand-orange" style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
+              </div>
+            </div>
+          ))}
+          {produtos.length === 0 && <div className="text-sm text-muted-foreground">Nenhum produto para o filtro selecionado.</div>}
+        </div>
+      </Panel>
     </>
   );
 }
