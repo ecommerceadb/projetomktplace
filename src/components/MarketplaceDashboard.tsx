@@ -60,14 +60,14 @@ export function MarketplaceDashboard(p: MarketplaceDashboardProps) {
     <div className="flex flex-wrap items-center gap-2 text-sm">
       <PeriodFilter />
       <label className="inline-flex items-center gap-2">
-        <span className="text-muted-foreground">Marketplace:</span>
+        <span className="text-muted-foreground hidden sm:inline">Marketplace:</span>
         <select
           value={currentValue}
           onChange={(e) => {
             const opt = MARKETPLACE_OPTIONS.find((o) => o.value === e.target.value);
             if (opt) navigate({ to: opt.to });
           }}
-          className="rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
+          className="rounded-md border border-border bg-card px-2 sm:px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
         >
           {MARKETPLACE_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
