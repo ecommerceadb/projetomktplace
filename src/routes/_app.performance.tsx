@@ -43,6 +43,39 @@ const STATE_DATA: StateRow[] = [
   { uf: "AM", estado: "Amazonas", regiao: "Norte", vendas: { "Mercado Livre": 12400, Magalu: 6800 } },
 ];
 
+const CATEGORIAS = ["Castanhas", "Costuráveis", "Kits"] as const;
+type Categoria = (typeof CATEGORIAS)[number];
+
+type ProdutoCat = {
+  sku: string;
+  nome: string;
+  categoria: Categoria;
+  precoMedio: number;
+  // vendas (unidades) por UF no mês
+  vendasPorUf: Record<string, number>;
+};
+
+const PRODUTOS_CAT: ProdutoCat[] = [
+  { sku: "CJU100", nome: "Castanha de Caju 100g", categoria: "Castanhas", precoMedio: 20.9,
+    vendasPorUf: { SP: 820, RJ: 410, MG: 380, RS: 240, PR: 220, SC: 180, BA: 210, PE: 140, CE: 120, DF: 150, GO: 110, PA: 80, AM: 55 } },
+  { sku: "MC100", nome: "Mix de Castanhas 100g", categoria: "Castanhas", precoMedio: 22.9,
+    vendasPorUf: { SP: 610, RJ: 290, MG: 265, RS: 180, PR: 165, SC: 140, BA: 160, PE: 105, CE: 92, DF: 118, GO: 84, PA: 62, AM: 44 } },
+  { sku: "CAS200", nome: "Castanha do Pará 200g", categoria: "Castanhas", precoMedio: 32.9,
+    vendasPorUf: { SP: 340, RJ: 160, MG: 145, RS: 100, PR: 92, SC: 78, BA: 88, PE: 60, CE: 52, DF: 68, GO: 46, PA: 38, AM: 28 } },
+  { sku: "ECOBAG-MG", nome: "Ecobag Turma da Mônica", categoria: "Costuráveis", precoMedio: 29.9,
+    vendasPorUf: { SP: 180, RJ: 92, MG: 88, RS: 62, PR: 55, SC: 44, BA: 52, PE: 34, CE: 30, DF: 40, GO: 26, PA: 20, AM: 14 } },
+  { sku: "NEC-CAS", nome: "Necessaire Cordel", categoria: "Costuráveis", precoMedio: 24.9,
+    vendasPorUf: { SP: 130, RJ: 68, MG: 62, RS: 42, PR: 40, SC: 32, BA: 38, PE: 24, CE: 22, DF: 28, GO: 18, PA: 14, AM: 10 } },
+  { sku: "AVE-COR", nome: "Avental Cordel", categoria: "Costuráveis", precoMedio: 39.9,
+    vendasPorUf: { SP: 90, RJ: 46, MG: 42, RS: 30, PR: 28, SC: 22, BA: 26, PE: 18, CE: 16, DF: 20, GO: 14, PA: 10, AM: 7 } },
+  { sku: "KIT03", nome: "Kit Presente 3 Produtos", categoria: "Kits", precoMedio: 65.0,
+    vendasPorUf: { SP: 160, RJ: 82, MG: 74, RS: 52, PR: 48, SC: 40, BA: 45, PE: 30, CE: 26, DF: 34, GO: 22, PA: 18, AM: 12 } },
+  { sku: "KIT05", nome: "Kit Presente 5 Produtos", categoria: "Kits", precoMedio: 98.0,
+    vendasPorUf: { SP: 110, RJ: 56, MG: 50, RS: 34, PR: 32, SC: 26, BA: 30, PE: 20, CE: 18, DF: 24, GO: 15, PA: 12, AM: 8 } },
+  { sku: "KIT-NATAL", nome: "Kit Presente Natal", categoria: "Kits", precoMedio: 129.0,
+    vendasPorUf: { SP: 78, RJ: 40, MG: 36, RS: 24, PR: 22, SC: 18, BA: 21, PE: 14, CE: 12, DF: 17, GO: 11, PA: 8, AM: 5 } },
+];
+
 const fmtBRL = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtCompact = (v: number) =>
