@@ -88,6 +88,10 @@ function PerformancePage() {
       <Tabs defaultValue="visao" className="space-y-4">
         <TabsList>
           <TabsTrigger value="visao">Visão Geral</TabsTrigger>
+          <TabsTrigger value="categorias">
+            <Tag className="size-3.5 mr-1.5" />
+            Categorias
+          </TabsTrigger>
           <TabsTrigger value="geografia">
             <MapPin className="size-3.5 mr-1.5" />
             Geografia
@@ -98,10 +102,166 @@ function PerformancePage() {
           <VisaoGeral />
         </TabsContent>
 
+        <TabsContent value="categorias" className="space-y-4">
+          <Categorias />
+        </TabsContent>
+
         <TabsContent value="geografia" className="space-y-4">
           <Geografia />
         </TabsContent>
       </Tabs>
+    </>
+  );
+}
+
+const MESES = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+const now = new Date();
+
+function Categorias() {
+  const [categoria, setCategoria] = useState<Categoria | "todas">("todas");
+  const [uf, setUf] = useState<string>("todas");
+  const [mes, setMes] = useState<string>(String(now.getMonth()));
+  const [ano, setAno] = useState<string>(String(now.getFullYear()));
+
+  const produtos = useMemo(() => {
+    return PRODUTOS_CAT
+      .filter((p) => categoria === "todas" || p.categoria === categoria)
+      .map((p) => {
+        const unidades = uf === "todas"
+          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
+          : (p.vendasPorUf[uf] ?? 0);
+        return { ...p, unidades, receita: unidades * p.precoMedio };
+      })
+      .sort((a, b) => b.unidades - a.unidades);
+  }, [categoria, uf]);
+
+  const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
+  const totalUnidades = produtos.reduce((s, p) => s + p.unidades, 0);
+  const lider = produtos[0];
+
+  const porCategoria = useMemo(() => {
+    return CATEGORIAS.map((cat) => {
+      const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
+        const unidades = uf === "todas"
+          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
+          : (p.vendasPorUf[uf] ?? 0);
+        return { ...p, unidades, receita: unidades * p.precoMedio };
+      }).sort((a, b) => b.unidades - a.unidades);
+      const receita = items.reduce((s, p) => s + p.receita, 0);
+      const unidades = items.reduce((s, p) => s + p.unidades, 0);
+      return { cat, items, receita, unidades, top: items[0] };
+    });
+  }, [uf]);
+
+  const maxUnid = Math.max(1, ...produtos.map((p) => p.unidades));
+
+  return (
+    <>
+      <Panel>
+        <div className="flex flex-wrap gap-3 items-end">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Categoria</label>
+            <Select value={categoria} onValueChange={(v) => setCategoria(v as Categoria | "todas")}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as categorias</SelectItem>
+                {CATEGORIAS.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Estado</label>
+            <Select value={uf} onValueChange={setUf}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todos os estados</SelectItem>
+                {STATE_DATA.map((s) => <SelectItem key={s.uf} value={s.uf}>{s.uf} — {s.estado}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Mês</label>
+            <Select value={mes} onValueChange={setMes}>
+              <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {MESES.map((m, i) => <SelectItem key={m} value={String(i)}>{m}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Ano</label>
+            <Select value={ano} onValueChange={setAno}>
+              <SelectTrigger className="w-[110px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {[0, 1, 2].map((i) => {
+                  const y = String(now.getFullYear() - i);
+                  return <SelectItem key={y} value={y}>{y}</SelectItem>;
+                })}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button variant="outline" size="sm" className="ml-auto">
+            <Download className="size-3.5 mr-1.5" /> Exportar CSV
+          </Button>
+        </div>
+      </Panel>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <MetricCard label="Receita (recorte)" value={fmtBRL(totalReceita)} hint={`${totalUnidades.toLocaleString("pt-BR")} unidades`} icon={<DollarSign className="size-4" />} iconColor="bg-success/15 text-success" />
+        <MetricCard label="Produto líder" value={lider?.sku ?? "—"} hint={lider ? `${lider.nome} · ${lider.unidades} un.` : ""} icon={<Trophy className="size-4" />} iconColor="bg-brand-yellow/20 text-brand-orange" />
+        <MetricCard label="Categorias" value={String(categoria === "todas" ? CATEGORIAS.length : 1)} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {porCategoria.map(({ cat, items, receita, unidades, top }) => (
+          <Panel key={cat} title={cat}>
+            <div className="text-xs text-muted-foreground mb-3 flex items-center justify-between">
+              <span>{unidades.toLocaleString("pt-BR")} un. · {fmtBRL(receita)}</span>
+              {top && <Badge variant="muted">Top: {top.sku}</Badge>}
+            </div>
+            <div className="space-y-2">
+              {items.slice(0, 5).map((p) => (
+                <div key={p.sku} className="flex items-center justify-between text-sm">
+                  <div className="min-w-0">
+                    <div className="font-medium truncate">{p.nome}</div>
+                    <div className="text-[11px] text-muted-foreground">{p.sku}</div>
+                  </div>
+                  <div className="text-right tabular-nums">
+                    <div className="font-semibold">{p.unidades} un.</div>
+                    <div className="text-[11px] text-muted-foreground">{fmtBRL(p.receita)}</div>
+                  </div>
+                </div>
+              ))}
+              {items.length === 0 && <div className="text-xs text-muted-foreground">Sem vendas no recorte.</div>}
+            </div>
+          </Panel>
+        ))}
+      </div>
+
+      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${MESES[Number(mes)]}/${ano}`}>
+        <div className="space-y-3">
+          {produtos.map((p, idx) => (
+            <div key={p.sku}>
+              <div className="flex items-center justify-between text-sm mb-1">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="inline-flex items-center justify-center size-7 rounded-md bg-muted text-xs font-bold shrink-0">{idx + 1}</span>
+                  <span className="font-medium truncate">{p.nome}</span>
+                  <Badge variant="muted">{p.categoria}</Badge>
+                  <span className="text-[11px] text-muted-foreground">{p.sku}</span>
+                </div>
+                <span className="text-muted-foreground font-semibold shrink-0 ml-3">{p.unidades} un. · {fmtBRL(p.receita)}</span>
+              </div>
+              <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-brand-yellow to-brand-orange" style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
+              </div>
+            </div>
+          ))}
+          {produtos.length === 0 && <div className="text-sm text-muted-foreground">Nenhum produto para o filtro selecionado.</div>}
+        </div>
+      </Panel>
     </>
   );
 }
