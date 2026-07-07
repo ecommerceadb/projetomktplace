@@ -12,6 +12,7 @@ import { PromptInput, PromptInputTextarea, PromptInputFooter, PromptInputSubmit 
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Bot, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { loadAiConfig } from "@/lib/ai-provider";
 
 export const Route = createFileRoute("/_authenticated/chat/$threadId")({
   component: ChatThread,
