@@ -12,6 +12,7 @@ import { PromptInput, PromptInputTextarea, PromptInputFooter, PromptInputSubmit 
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Bot, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { loadAiConfig } from "@/lib/ai-provider";
 
 export const Route = createFileRoute("/_authenticated/chat/$threadId")({
   component: ChatThread,
@@ -42,12 +43,14 @@ function ChatThread() {
   });
 
   const transport = useMemo(
-    () =>
-      new DefaultChatTransport({
+    () => {
+      const ai = loadAiConfig();
+      return new DefaultChatTransport({
         api: "/api/chat",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: { threadId },
-      }),
+        body: { threadId, aiProvider: ai.provider, aiApiKey: ai.apiKey, aiModel: ai.model },
+      });
+    },
     [token, threadId],
   );
 
