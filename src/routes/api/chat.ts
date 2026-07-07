@@ -1,18 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { convertToModelMessages, streamText, type UIMessage, type LanguageModel } from "ai";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
 import { buildSystemPrompt } from "@/lib/operational-context";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
-type ChatRequestBody = { messages?: unknown; threadId?: string };
+type AiProviderId = "lovable" | "openai" | "anthropic" | "google";
+type ChatRequestBody = {
+  messages?: unknown;
+  threadId?: string;
+  aiProvider?: AiProviderId;
+  aiApiKey?: string;
+  aiModel?: string;
+};
+
+function resolveModel(
+  provider: AiProviderId,
+  apiKey: string | undefined,
+  model: string | undefined,
+  lovableKey: string,
+): { model: LanguageModel } | { error: Response } {
+  if (provider === "openai") {
+    if (!apiKey) return { error: new Response("Chave OpenAI não configurada. Vá em Configurações → Provedores de IA.", { status: 400 }) };
+    return { model: createOpenAI({ apiKey })(model || "gpt-4o-mini") };
+  }
+  if (provider === "anthropic") {
+    if (!apiKey) return { error: new Response("Chave Anthropic não configurada. Vá em Configurações → Provedores de IA.", { status: 400 }) };
+    return { model: createAnthropic({ apiKey })(model || "claude-3-5-sonnet-latest") };
+  }
+  if (provider === "google") {
+    if (!apiKey) return { error: new Response("Chave Google Gemini não configurada. Vá em Configurações → Provedores de IA.", { status: 400 }) };
+    return { model: createGoogleGenerativeAI({ apiKey })(model || "gemini-2.5-flash") };
+  }
+  const gateway = createLovableAiGatewayProvider(lovableKey);
+  return { model: gateway(model || "google/gemini-3-flash-preview") };
+}
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const body = (await request.json()) as ChatRequestBody;
-        const { messages, threadId } = body;
+        const { messages, threadId, aiProvider = "lovable", aiApiKey, aiModel } = body;
 
         if (!Array.isArray(messages)) {
           return new Response("Messages are required", { status: 400 });
