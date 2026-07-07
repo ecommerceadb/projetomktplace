@@ -43,12 +43,14 @@ function ChatThread() {
   });
 
   const transport = useMemo(
-    () =>
-      new DefaultChatTransport({
+    () => {
+      const ai = loadAiConfig();
+      return new DefaultChatTransport({
         api: "/api/chat",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: { threadId },
-      }),
+        body: { threadId, aiProvider: ai.provider, aiApiKey: ai.apiKey, aiModel: ai.model },
+      });
+    },
     [token, threadId],
   );
 
