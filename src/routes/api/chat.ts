@@ -102,11 +102,11 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
-        const gateway = createLovableAiGatewayProvider(key);
-        const model = gateway("google/gemini-3-flash-preview");
+        const resolved = resolveModel(aiProvider, aiApiKey, aiModel, key);
+        if ("error" in resolved) return resolved.error;
 
         const result = streamText({
-          model,
+          model: resolved.model,
           system: buildSystemPrompt(),
           messages: await convertToModelMessages(uiMessages),
         });
