@@ -48,7 +48,7 @@ export function PeriodFilter({
         aria-label="Ano"
         className="rounded-md border border-border bg-card px-1.5 sm:px-2 py-1.5 sm:py-2 text-sm font-medium text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
       >
-        {YEARS.map((y) => (
+        {years.map((y: number) => (
           <option key={y} value={y}>{y}</option>
         ))}
       </select>
