@@ -11,27 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
-import { Route as AppSeoRouteImport } from './routes/_app.seo'
 import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
 import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
 import { Route as AppPerformanceRouteImport } from './routes/_app.performance'
-import { Route as AppOportunidadesRouteImport } from './routes/_app.oportunidades'
 import { Route as AppMercadoLivreRouteImport } from './routes/_app.mercado-livre'
 import { Route as AppMagazineLuizaRouteImport } from './routes/_app.magazine-luiza'
 import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
 import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
-import { Route as AppConcorrenciaRouteImport } from './routes/_app.concorrencia'
 import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
 import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
-import { Route as AppCatalogoRouteImport } from './routes/_app.catalogo'
 import { Route as AppCampanhasRouteImport } from './routes/_app.campanhas'
-import { Route as AppCadastroRouteImport } from './routes/_app.cadastro'
-import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
-import { Route as AuthenticatedChatThreadIdRouteImport } from './routes/_authenticated/chat.$threadId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -42,28 +32,9 @@ const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppRoute,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AppSeoRoute = AppSeoRouteImport.update({
-  id: '/seo',
-  path: '/seo',
   getParentRoute: () => AppRoute,
 } as any)
 const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
@@ -79,11 +50,6 @@ const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
 const AppPerformanceRoute = AppPerformanceRouteImport.update({
   id: '/performance',
   path: '/performance',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppOportunidadesRoute = AppOportunidadesRouteImport.update({
-  id: '/oportunidades',
-  path: '/oportunidades',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMercadoLivreRoute = AppMercadoLivreRouteImport.update({
@@ -106,11 +72,6 @@ const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
   path: '/configuracoes',
   getParentRoute: () => AppRoute,
 } as any)
-const AppConcorrenciaRoute = AppConcorrenciaRouteImport.update({
-  id: '/concorrencia',
-  path: '/concorrencia',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
   id: '/central-dados',
   path: '/central-dados',
@@ -121,182 +82,105 @@ const AppCentralAlertasRoute = AppCentralAlertasRouteImport.update({
   path: '/central-alertas',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCatalogoRoute = AppCatalogoRouteImport.update({
-  id: '/catalogo',
-  path: '/catalogo',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppCampanhasRoute = AppCampanhasRouteImport.update({
   id: '/campanhas',
   path: '/campanhas',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCadastroRoute = AppCadastroRouteImport.update({
-  id: '/cadastro',
-  path: '/cadastro',
-  getParentRoute: () => AppRoute,
-} as any)
-const AuthenticatedChatIndexRoute = AuthenticatedChatIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedChatRoute,
-} as any)
-const AuthenticatedChatThreadIdRoute =
-  AuthenticatedChatThreadIdRouteImport.update({
-    id: '/$threadId',
-    path: '/$threadId',
-    getParentRoute: () => AuthenticatedChatRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthRoute
-  '/cadastro': typeof AppCadastroRoute
   '/campanhas': typeof AppCampanhasRoute
-  '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
   '/central-dados': typeof AppCentralDadosRoute
-  '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
   '/magazine-luiza': typeof AppMagazineLuizaRoute
   '/mercado-livre': typeof AppMercadoLivreRoute
-  '/oportunidades': typeof AppOportunidadesRoute
   '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
   '/relatorios': typeof AppRelatoriosRoute
-  '/seo': typeof AppSeoRoute
-  '/chat': typeof AuthenticatedChatRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
-  '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
-  '/chat/': typeof AuthenticatedChatIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AppIndexRoute
   '/auth': typeof AuthRoute
-  '/cadastro': typeof AppCadastroRoute
   '/campanhas': typeof AppCampanhasRoute
-  '/catalogo': typeof AppCatalogoRoute
   '/central-alertas': typeof AppCentralAlertasRoute
   '/central-dados': typeof AppCentralDadosRoute
-  '/concorrencia': typeof AppConcorrenciaRoute
   '/configuracoes': typeof AppConfiguracoesRoute
   '/estoque': typeof AppEstoqueRoute
   '/magazine-luiza': typeof AppMagazineLuizaRoute
   '/mercado-livre': typeof AppMercadoLivreRoute
-  '/oportunidades': typeof AppOportunidadesRoute
   '/performance': typeof AppPerformanceRoute
   '/planejamento': typeof AppPlanejamentoRoute
   '/relatorios': typeof AppRelatoriosRoute
-  '/seo': typeof AppSeoRoute
-  '/api/chat': typeof ApiChatRoute
-  '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
-  '/chat': typeof AuthenticatedChatIndexRoute
+  '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_app/cadastro': typeof AppCadastroRoute
   '/_app/campanhas': typeof AppCampanhasRoute
-  '/_app/catalogo': typeof AppCatalogoRoute
   '/_app/central-alertas': typeof AppCentralAlertasRoute
   '/_app/central-dados': typeof AppCentralDadosRoute
-  '/_app/concorrencia': typeof AppConcorrenciaRoute
   '/_app/configuracoes': typeof AppConfiguracoesRoute
   '/_app/estoque': typeof AppEstoqueRoute
   '/_app/magazine-luiza': typeof AppMagazineLuizaRoute
   '/_app/mercado-livre': typeof AppMercadoLivreRoute
-  '/_app/oportunidades': typeof AppOportunidadesRoute
   '/_app/performance': typeof AppPerformanceRoute
   '/_app/planejamento': typeof AppPlanejamentoRoute
   '/_app/relatorios': typeof AppRelatoriosRoute
-  '/_app/seo': typeof AppSeoRoute
-  '/_authenticated/chat': typeof AuthenticatedChatRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
   '/_app/': typeof AppIndexRoute
-  '/_authenticated/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
-  '/_authenticated/chat/': typeof AuthenticatedChatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
-    | '/cadastro'
     | '/campanhas'
-    | '/catalogo'
     | '/central-alertas'
     | '/central-dados'
-    | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
     | '/magazine-luiza'
     | '/mercado-livre'
-    | '/oportunidades'
     | '/performance'
     | '/planejamento'
     | '/relatorios'
-    | '/seo'
-    | '/chat'
-    | '/api/chat'
-    | '/chat/$threadId'
-    | '/chat/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/auth'
-    | '/cadastro'
     | '/campanhas'
-    | '/catalogo'
     | '/central-alertas'
     | '/central-dados'
-    | '/concorrencia'
     | '/configuracoes'
     | '/estoque'
     | '/magazine-luiza'
     | '/mercado-livre'
-    | '/oportunidades'
     | '/performance'
     | '/planejamento'
     | '/relatorios'
-    | '/seo'
-    | '/api/chat'
-    | '/chat/$threadId'
-    | '/chat'
+    | '/'
   id:
     | '__root__'
-    | '/_authenticated'
     | '/_app'
     | '/auth'
-    | '/_app/cadastro'
     | '/_app/campanhas'
-    | '/_app/catalogo'
     | '/_app/central-alertas'
     | '/_app/central-dados'
-    | '/_app/concorrencia'
     | '/_app/configuracoes'
     | '/_app/estoque'
     | '/_app/magazine-luiza'
     | '/_app/mercado-livre'
-    | '/_app/oportunidades'
     | '/_app/performance'
     | '/_app/planejamento'
     | '/_app/relatorios'
-    | '/_app/seo'
-    | '/_authenticated/chat'
-    | '/api/chat'
     | '/_app/'
-    | '/_authenticated/chat/$threadId'
-    | '/_authenticated/chat/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
-  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -315,39 +199,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_app/': {
       id: '/_app/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/chat': {
-      id: '/_authenticated/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof AuthenticatedChatRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_app/seo': {
-      id: '/_app/seo'
-      path: '/seo'
-      fullPath: '/seo'
-      preLoaderRoute: typeof AppSeoRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/relatorios': {
@@ -369,13 +225,6 @@ declare module '@tanstack/react-router' {
       path: '/performance'
       fullPath: '/performance'
       preLoaderRoute: typeof AppPerformanceRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/oportunidades': {
-      id: '/_app/oportunidades'
-      path: '/oportunidades'
-      fullPath: '/oportunidades'
-      preLoaderRoute: typeof AppOportunidadesRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/mercado-livre': {
@@ -406,13 +255,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppConfiguracoesRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/concorrencia': {
-      id: '/_app/concorrencia'
-      path: '/concorrencia'
-      fullPath: '/concorrencia'
-      preLoaderRoute: typeof AppConcorrenciaRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/central-dados': {
       id: '/_app/central-dados'
       path: '/central-dados'
@@ -427,13 +269,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCentralAlertasRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/catalogo': {
-      id: '/_app/catalogo'
-      path: '/catalogo'
-      fullPath: '/catalogo'
-      preLoaderRoute: typeof AppCatalogoRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/campanhas': {
       id: '/_app/campanhas'
       path: '/campanhas'
@@ -441,110 +276,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCampanhasRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/cadastro': {
-      id: '/_app/cadastro'
-      path: '/cadastro'
-      fullPath: '/cadastro'
-      preLoaderRoute: typeof AppCadastroRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_authenticated/chat/': {
-      id: '/_authenticated/chat/'
-      path: '/'
-      fullPath: '/chat/'
-      preLoaderRoute: typeof AuthenticatedChatIndexRouteImport
-      parentRoute: typeof AuthenticatedChatRoute
-    }
-    '/_authenticated/chat/$threadId': {
-      id: '/_authenticated/chat/$threadId'
-      path: '/$threadId'
-      fullPath: '/chat/$threadId'
-      preLoaderRoute: typeof AuthenticatedChatThreadIdRouteImport
-      parentRoute: typeof AuthenticatedChatRoute
-    }
   }
 }
 
-interface AuthenticatedChatRouteChildren {
-  AuthenticatedChatThreadIdRoute: typeof AuthenticatedChatThreadIdRoute
-  AuthenticatedChatIndexRoute: typeof AuthenticatedChatIndexRoute
-}
-
-const AuthenticatedChatRouteChildren: AuthenticatedChatRouteChildren = {
-  AuthenticatedChatThreadIdRoute: AuthenticatedChatThreadIdRoute,
-  AuthenticatedChatIndexRoute: AuthenticatedChatIndexRoute,
-}
-
-const AuthenticatedChatRouteWithChildren =
-  AuthenticatedChatRoute._addFileChildren(AuthenticatedChatRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedChatRoute: typeof AuthenticatedChatRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedChatRoute: AuthenticatedChatRouteWithChildren,
-}
-
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
-
 interface AppRouteChildren {
-  AppCadastroRoute: typeof AppCadastroRoute
   AppCampanhasRoute: typeof AppCampanhasRoute
-  AppCatalogoRoute: typeof AppCatalogoRoute
   AppCentralAlertasRoute: typeof AppCentralAlertasRoute
   AppCentralDadosRoute: typeof AppCentralDadosRoute
-  AppConcorrenciaRoute: typeof AppConcorrenciaRoute
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppEstoqueRoute: typeof AppEstoqueRoute
   AppMagazineLuizaRoute: typeof AppMagazineLuizaRoute
   AppMercadoLivreRoute: typeof AppMercadoLivreRoute
-  AppOportunidadesRoute: typeof AppOportunidadesRoute
   AppPerformanceRoute: typeof AppPerformanceRoute
   AppPlanejamentoRoute: typeof AppPlanejamentoRoute
   AppRelatoriosRoute: typeof AppRelatoriosRoute
-  AppSeoRoute: typeof AppSeoRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppCadastroRoute: AppCadastroRoute,
   AppCampanhasRoute: AppCampanhasRoute,
-  AppCatalogoRoute: AppCatalogoRoute,
   AppCentralAlertasRoute: AppCentralAlertasRoute,
   AppCentralDadosRoute: AppCentralDadosRoute,
-  AppConcorrenciaRoute: AppConcorrenciaRoute,
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppEstoqueRoute: AppEstoqueRoute,
   AppMagazineLuizaRoute: AppMagazineLuizaRoute,
   AppMercadoLivreRoute: AppMercadoLivreRoute,
-  AppOportunidadesRoute: AppOportunidadesRoute,
   AppPerformanceRoute: AppPerformanceRoute,
   AppPlanejamentoRoute: AppPlanejamentoRoute,
   AppRelatoriosRoute: AppRelatoriosRoute,
-  AppSeoRoute: AppSeoRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
-  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
