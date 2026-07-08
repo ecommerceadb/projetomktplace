@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar } from "lucide-react";
 
 const MESES = [
@@ -6,18 +6,27 @@ const MESES = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
-const now = new Date();
-const CURRENT_MONTH = now.getMonth();
-const CURRENT_YEAR = now.getFullYear();
-const YEARS = Array.from({ length: 6 }, (_, i) => CURRENT_YEAR - i);
+const FALLBACK_YEAR = 2026;
+const FALLBACK_MONTH = 0;
 
 export function PeriodFilter({
   className = "",
 }: {
   className?: string;
 }) {
-  const [mes, setMes] = useState<number>(CURRENT_MONTH);
-  const [ano, setAno] = useState<number>(CURRENT_YEAR);
+  const [mes, setMes] = useState<number>(FALLBACK_MONTH);
+  const [ano, setAno] = useState<number>(FALLBACK_YEAR);
+
+  useEffect(() => {
+    const now = new Date();
+    setMes(now.getMonth());
+    setAno(now.getFullYear());
+  }, []);
+
+  const years = Array.from({ length: 6 }, (_, i) => ano - i).includes(FALLBACK_YEAR)
+    ? Array.from({ length: 6 }, (_, i) => ano - i)
+    : [ano, ...Array.from({ length: 5 }, (_, i) => ano - i - 1)];
+
 
   return (
     <label className={`inline-flex items-center gap-1.5 sm:gap-2 text-sm ${className}`}>
@@ -39,7 +48,7 @@ export function PeriodFilter({
         aria-label="Ano"
         className="rounded-md border border-border bg-card px-1.5 sm:px-2 py-1.5 sm:py-2 text-sm font-medium text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
       >
-        {YEARS.map((y) => (
+        {years.map((y: number) => (
           <option key={y} value={y}>{y}</option>
         ))}
       </select>

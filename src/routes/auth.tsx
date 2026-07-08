@@ -27,15 +27,15 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/chat` },
+          options: { emailRedirectTo: `${window.location.origin}/` },
         });
         if (error) throw error;
         toast.success("Conta criada! Verifique seu e-mail caso a confirmação esteja ativa.");
-        navigate({ to: "/chat" });
+        navigate({ to: "/" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/chat" });
+        navigate({ to: "/" });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Falha na autenticação");
@@ -47,7 +47,7 @@ function AuthPage() {
   async function handleGoogle() {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/chat`,
+      redirect_uri: `${window.location.origin}/`,
     });
     if (result.error) {
       toast.error(result.error.message ?? "Falha no login com Google");
@@ -55,7 +55,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/chat" });
+    navigate({ to: "/" });
   }
 
   return (
