@@ -37,7 +37,7 @@ function Configuracoes() {
 
 function Geral() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Panel title="Preferências Gerais">
         <div className="space-y-4 text-sm">
           <Field label="Nome da Empresa" value="Amigos do Bem" />
@@ -63,31 +63,6 @@ function Geral() {
             </li>
           ))}
         </ul>
-      </Panel>
-
-      <Panel title="Informações da Conta">
-        <div className="space-y-4 text-sm">
-          <div>
-            <div className="text-xs text-muted-foreground">Plano Atual</div>
-            <div className="font-semibold">Profissional</div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground">Limite de Usuários</div>
-            <div className="font-semibold">10 usuários</div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">Armazenamento</div>
-            <div className="h-2 rounded-full bg-muted overflow-hidden">
-              <div className="h-full bg-success" style={{ width: "78%" }} />
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">78% utilizado (7,8 GB / 10 GB)</div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground">Renovação do Plano</div>
-            <div className="font-semibold">15/06/2025</div>
-          </div>
-          <button className="w-full rounded-md border border-border py-2.5 text-sm font-semibold hover:bg-accent">Gerenciar Plano</button>
-        </div>
       </Panel>
     </div>
   );
