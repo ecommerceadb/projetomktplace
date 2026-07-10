@@ -96,6 +96,10 @@ function PerformancePage() {
             <MapPin className="size-3.5 mr-1.5" />
             Geografia
           </TabsTrigger>
+          <TabsTrigger value="curva">
+            <Activity className="size-3.5 mr-1.5" />
+            Curva
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="visao" className="space-y-4">
@@ -108,6 +112,10 @@ function PerformancePage() {
 
         <TabsContent value="geografia" className="space-y-4">
           <Geografia />
+        </TabsContent>
+
+        <TabsContent value="curva" className="space-y-4">
+          <Curva />
         </TabsContent>
       </Tabs>
     </>
