@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { DollarSign, ShoppingCart, TrendingUp, MapPin, Download, Tag, Trophy } from "lucide-react";
+import { DollarSign, ShoppingCart, TrendingUp, MapPin, Download, Tag, Trophy, Activity } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
 import { MetricCard, Panel, Badge } from "@/components/ui-panels";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
