@@ -473,3 +473,143 @@ function Geografia() {
     </>
   );
 }
+
+function Curva() {
+  const produtos = useMemo(() => {
+    return PRODUTOS_CAT.map((p) => {
+      const unidades = Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0);
+      return { ...p, unidades, receita: unidades * p.precoMedio };
+    }).sort((a, b) => b.receita - a.receita);
+  }, []);
+
+  const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
+  let acumulado = 0;
+  const comCurva = produtos.map((p) => {
+    acumulado += p.receita;
+    const pctAcum = (acumulado / totalReceita) * 100;
+    const curva: "A" | "B" | "C" = pctAcum <= 80 ? "A" : pctAcum <= 95 ? "B" : "C";
+    return { ...p, pctAcum, pctIndiv: (p.receita / totalReceita) * 100, curva };
+  });
+
+  const grupos = (["A", "B", "C"] as const).map((c) => {
+    const items = comCurva.filter((p) => p.curva === c);
+    const receita = items.reduce((s, p) => s + p.receita, 0);
+    return { curva: c, items, receita, pct: (receita / totalReceita) * 100 };
+  });
+
+  const curvaMeta: Record<"A" | "B" | "C", { label: string; color: string; hint: string }> = {
+    A: { label: "Curva A", color: "bg-success", hint: "80% da receita — foco máximo" },
+    B: { label: "Curva B", color: "bg-brand-yellow", hint: "15% da receita — monitorar" },
+    C: { label: "Curva C", color: "bg-info", hint: "5% da receita — cauda longa" },
+  };
+
+  const maxReceita = Math.max(1, ...comCurva.map((p) => p.receita));
+
+  return (
+    <>
+      <Panel>
+        <p className="text-xs text-muted-foreground">
+          Classificação de produtos pela <strong>Curva de Pareto (ABC)</strong>: <strong>A</strong> concentra 80% da
+          receita, <strong>B</strong> os próximos 15% e <strong>C</strong> os 5% restantes.
+        </p>
+      </Panel>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {grupos.map((g) => (
+          <MetricCard
+            key={g.curva}
+            label={curvaMeta[g.curva].label}
+            value={`${g.items.length} SKUs`}
+            hint={`${fmtBRL(g.receita)} · ${g.pct.toFixed(1)}%`}
+            icon={<Activity className="size-4" />}
+            iconColor={
+              g.curva === "A"
+                ? "bg-success/15 text-success"
+                : g.curva === "B"
+                  ? "bg-brand-yellow/20 text-brand-orange"
+                  : "bg-info/15 text-info"
+            }
+          />
+        ))}
+      </div>
+
+      <Panel title="Distribuição da receita">
+        <div className="flex h-3 w-full rounded-full overflow-hidden">
+          {grupos.map((g) => (
+            <div key={g.curva} className={curvaMeta[g.curva].color} style={{ width: `${g.pct}%` }} />
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-4 mt-3 text-xs">
+          {grupos.map((g) => (
+            <div key={g.curva} className="flex items-center gap-2">
+              <span className={`inline-block size-3 rounded ${curvaMeta[g.curva].color}`} />
+              <span className="font-semibold">{curvaMeta[g.curva].label}</span>
+              <span className="text-muted-foreground">{curvaMeta[g.curva].hint}</span>
+            </div>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel title="Ranking Pareto por produto">
+        <div className="overflow-x-auto -mx-5">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted-foreground border-b border-border">
+                <th className="px-5 py-2 font-medium">#</th>
+                <th className="px-3 py-2 font-medium">Produto</th>
+                <th className="px-3 py-2 font-medium">Categoria</th>
+                <th className="px-3 py-2 font-medium text-right">Unid.</th>
+                <th className="px-3 py-2 font-medium text-right">Receita</th>
+                <th className="px-3 py-2 font-medium text-right">% indiv.</th>
+                <th className="px-3 py-2 font-medium text-right">% acum.</th>
+                <th className="px-5 py-2 font-medium text-center">Curva</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comCurva.map((p, idx) => (
+                <tr key={p.sku} className="border-b border-border/50 hover:bg-muted/40">
+                  <td className="px-5 py-2 tabular-nums text-muted-foreground">{idx + 1}</td>
+                  <td className="px-3 py-2">
+                    <div className="font-medium">{p.nome}</div>
+                    <div className="text-[11px] text-muted-foreground">{p.sku}</div>
+                  </td>
+                  <td className="px-3 py-2"><Badge variant="muted">{p.categoria}</Badge></td>
+                  <td className="px-3 py-2 text-right tabular-nums">{p.unidades.toLocaleString("pt-BR")}</td>
+                  <td className="px-3 py-2 text-right tabular-nums font-semibold">{fmtBRL(p.receita)}</td>
+                  <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{p.pctIndiv.toFixed(1)}%</td>
+                  <td className="px-3 py-2 text-right tabular-nums text-muted-foreground">{p.pctAcum.toFixed(1)}%</td>
+                  <td className="px-5 py-2 text-center">
+                    <span
+                      className={`inline-flex items-center justify-center size-7 rounded-md text-xs font-bold text-white ${curvaMeta[p.curva].color}`}
+                    >
+                      {p.curva}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel title="Curva de Pareto (receita acumulada)">
+        <div className="space-y-2">
+          {comCurva.map((p) => (
+            <div key={p.sku} className="flex items-center gap-3">
+              <div className="w-40 shrink-0 text-xs truncate">{p.nome}</div>
+              <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                <div
+                  className={`h-full ${curvaMeta[p.curva].color}`}
+                  style={{ width: `${(p.receita / maxReceita) * 100}%` }}
+                />
+              </div>
+              <div className="w-24 text-right text-xs tabular-nums text-muted-foreground">
+                {p.pctAcum.toFixed(1)}%
+              </div>
+            </div>
+          ))}
+        </div>
+      </Panel>
+    </>
+  );
+}
