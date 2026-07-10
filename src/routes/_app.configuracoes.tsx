@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_app/configuracoes")({
   component: Configuracoes,
 });
 
-const TABS = ["Geral", "Provedores de IA", "Usuários", "Notificações", "Integrações"] as const;
+const TABS = ["Geral", "Provedores de IA", "Integrações"] as const;
 
 function Configuracoes() {
   const [tab, setTab] = useState<(typeof TABS)[number]>("Geral");
