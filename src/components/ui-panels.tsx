@@ -57,17 +57,23 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <div className={`rounded-xl bg-card border border-border shadow-sm ${className}`}>
+    <div className={`rounded-2xl bg-card border border-border shadow-[0_6px_24px_-12px_color-mix(in_oklab,var(--brand-navy)_35%,transparent)] ${className}`}>
       {(title || action) && (
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          {title ? <h3 className="text-sm font-semibold text-foreground">{title}</h3> : <span />}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+          {title ? (
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <span className="size-2 rounded-full bg-brand-orange" />
+              {title}
+            </h3>
+          ) : <span />}
           {action}
         </div>
       )}
-      <div className="p-5">{children}</div>
+      <div className="p-6">{children}</div>
     </div>
   );
 }
+
 
 export function Badge({
   children,
