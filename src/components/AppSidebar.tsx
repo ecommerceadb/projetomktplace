@@ -51,11 +51,12 @@ export function AppSidebar() {
             <Link
               key={item.to}
               to={item.to}
-              className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+              className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
                 active
                   ? "bg-sidebar-active text-sidebar-active-foreground font-semibold shadow-sm"
                   : "text-sidebar-foreground/85 hover:bg-white/5 hover:text-white"
               }`}
+
             >
               <Icon className="size-4 shrink-0" />
               <span className="truncate">{item.label}</span>
@@ -67,19 +68,20 @@ export function AppSidebar() {
           MARKETPLACES
         </div>
         <div className="px-2 space-y-2">
-          <Link to="/mercado-livre" className="flex items-center justify-between rounded-md bg-brand-yellow text-sidebar px-3 py-2 text-xs font-semibold hover:brightness-105">
+          <Link to="/mercado-livre" className="flex items-center justify-between rounded-xl bg-brand-yellow text-sidebar px-3 py-2.5 text-xs font-semibold hover:brightness-105">
             <span>mercado livre</span>
             <span className="opacity-80">Mercado Livre</span>
           </Link>
-          <Link to="/magazine-luiza" className="flex items-center justify-between rounded-md bg-white/95 text-sidebar px-3 py-2 text-xs font-semibold hover:brightness-105">
+          <Link to="/magazine-luiza" className="flex items-center justify-between rounded-xl bg-white/95 text-sidebar px-3 py-2.5 text-xs font-semibold hover:brightness-105">
             <span>magazine</span>
             <span className="opacity-80">Magazine Luiza</span>
           </Link>
-          <Link to="/" className="flex items-center justify-center gap-2 rounded-md border border-white/15 px-3 py-2 text-xs font-medium text-sidebar-foreground/90 hover:bg-white/5">
+          <Link to="/" className="flex items-center justify-center gap-2 rounded-xl border border-white/15 px-3 py-2.5 text-xs font-medium text-sidebar-foreground/90 hover:bg-white/5">
             <LayoutDashboard className="size-3.5" />
             Visão Consolidada
           </Link>
         </div>
+
       </nav>
 
       <div className="border-t border-white/10 px-4 py-3 flex items-center gap-3">
