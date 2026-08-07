@@ -51,11 +51,12 @@ export function AppSidebar() {
             <Link
               key={item.to}
               to={item.to}
-              className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+              className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
                 active
                   ? "bg-sidebar-active text-sidebar-active-foreground font-semibold shadow-sm"
                   : "text-sidebar-foreground/85 hover:bg-white/5 hover:text-white"
               }`}
+
             >
               <Icon className="size-4 shrink-0" />
               <span className="truncate">{item.label}</span>
