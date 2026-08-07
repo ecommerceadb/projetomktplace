@@ -23,14 +23,14 @@ export function MetricCard({
   const TrendIcon = trend === "down" ? ArrowDown : ArrowUp;
 
   return (
-    <div className="rounded-xl bg-card border border-border p-4 flex flex-col gap-2 shadow-sm">
+    <div className="rounded-2xl bg-card border border-border p-5 flex flex-col gap-2 shadow-[0_6px_24px_-12px_color-mix(in_oklab,var(--brand-navy)_35%,transparent)]">
       <div className="flex items-start justify-between">
-        <span className="text-xs font-medium text-muted-foreground">{label}</span>
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
         {icon ? (
-          <div className={`size-9 rounded-lg flex items-center justify-center ${iconColor}`}>{icon}</div>
+          <div className={`size-9 rounded-xl flex items-center justify-center ${iconColor}`}>{icon}</div>
         ) : null}
       </div>
-      <div className="text-2xl font-bold text-foreground">{value}</div>
+      <div className="text-2xl font-extrabold tracking-tight text-foreground">{value}</div>
       {delta ? (
         <div className={`flex items-center gap-1 text-xs font-semibold ${trendColor}`}>
           <TrendIcon className="size-3.5" />
@@ -43,6 +43,7 @@ export function MetricCard({
     </div>
   );
 }
+
 
 export function Panel({
   title,
