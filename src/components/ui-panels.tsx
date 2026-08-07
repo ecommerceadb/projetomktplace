@@ -91,8 +91,9 @@ export function Badge({
     muted: "bg-muted text-muted-foreground",
   };
   return (
-    <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${styles[variant]}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${styles[variant]}`}>
       {children}
     </span>
   );
+
 }
