@@ -150,6 +150,7 @@ const now = new Date();
 
 function Categorias() {
   const [categoria, setCategoria] = useState<Categoria | "todas">("todas");
+  const [plataforma, setPlataforma] = useState<Marketplace | "todas">("todas");
   const [uf, setUf] = useState<string>("todas");
   const [mes, setMes] = useState<string>(String(now.getMonth()));
   const [ano, setAno] = useState<string>(String(now.getFullYear()));
@@ -158,13 +159,11 @@ function Categorias() {
     return PRODUTOS_CAT
       .filter((p) => categoria === "todas" || p.categoria === categoria)
       .map((p) => {
-        const unidades = uf === "todas"
-          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
-          : (p.vendasPorUf[uf] ?? 0);
+        const unidades = unidadesDe(p, uf, plataforma);
         return { ...p, unidades, receita: unidades * p.precoMedio };
       })
       .sort((a, b) => b.unidades - a.unidades);
-  }, [categoria, uf]);
+  }, [categoria, uf, plataforma]);
 
   const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
   const totalUnidades = produtos.reduce((s, p) => s + p.unidades, 0);
@@ -173,18 +172,39 @@ function Categorias() {
   const porCategoria = useMemo(() => {
     return CATEGORIAS.map((cat) => {
       const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
-        const unidades = uf === "todas"
-          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
-          : (p.vendasPorUf[uf] ?? 0);
+        const unidades = unidadesDe(p, uf, plataforma);
         return { ...p, unidades, receita: unidades * p.precoMedio };
       }).sort((a, b) => b.unidades - a.unidades);
       const receita = items.reduce((s, p) => s + p.receita, 0);
       const unidades = items.reduce((s, p) => s + p.unidades, 0);
       return { cat, items, receita, unidades, top: items[0] };
     });
+  }, [uf, plataforma]);
+
+  // matriz categoria × plataforma (respeita filtro de estado)
+  const matriz = useMemo(() => {
+    const rows = CATEGORIAS.map((cat) => {
+      const porMkt = MARKETPLACES.map((m) => {
+        const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
+          const unidades = unidadesDe(p, uf, m);
+          return { ...p, unidades, receita: unidades * p.precoMedio };
+        }).sort((a, b) => b.unidades - a.unidades);
+        return {
+          mkt: m,
+          unidades: items.reduce((s, p) => s + p.unidades, 0),
+          receita: items.reduce((s, p) => s + p.receita, 0),
+          top: items[0],
+        };
+      });
+      const receita = porMkt.reduce((s, x) => s + x.receita, 0);
+      return { cat, porMkt, receita };
+    });
+    const total = rows.reduce((s, r) => s + r.receita, 0) || 1;
+    return { rows, total };
   }, [uf]);
 
   const maxUnid = Math.max(1, ...produtos.map((p) => p.unidades));
+
 
   return (
     <>
