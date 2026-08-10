@@ -347,7 +347,7 @@ function Categorias() {
         ))}
       </div>
 
-      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${MESES[Number(mes)]}/${ano}`}>
+      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${plataforma === "todas" ? "todas as plataformas" : plataforma} · ${MESES[Number(mes)]}/${ano}`}>
         <div className="space-y-3">
           {produtos.map((p, idx) => (
             <div key={p.sku}>
@@ -360,9 +360,31 @@ function Categorias() {
                 </div>
                 <span className="text-muted-foreground font-semibold shrink-0 ml-3">{p.unidades} un. · {fmtBRL(p.receita)}</span>
               </div>
-              <div className="h-2 rounded-full bg-muted overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-brand-yellow to-brand-orange" style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
-              </div>
+              {plataforma === "todas" ? (
+                <>
+                  <div className="flex h-2 rounded-full bg-muted overflow-hidden">
+                    {MARKETPLACES.map((m) => (
+                      <div
+                        key={m}
+                        className={MARKETPLACE_COLORS[m]}
+                        style={{ width: `${(p.unidades / maxUnid) * 100 * p.share[m]}%` }}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-4 mt-1 text-[11px] text-muted-foreground">
+                    {MARKETPLACES.map((m) => (
+                      <span key={m} className="flex items-center gap-1.5">
+                        <span className={`size-2 rounded-full ${MARKETPLACE_COLORS[m]}`} />
+                        {m}: {Math.round(p.unidades * p.share[m])} un. ({(p.share[m] * 100).toFixed(0)}%)
+                      </span>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                  <div className={`h-full ${MARKETPLACE_COLORS[plataforma]}`} style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
+                </div>
+              )}
             </div>
           ))}
           {produtos.length === 0 && <div className="text-sm text-muted-foreground">Nenhum produto para o filtro selecionado.</div>}
