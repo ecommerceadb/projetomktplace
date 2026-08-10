@@ -51,28 +51,39 @@ type ProdutoCat = {
   nome: string;
   categoria: Categoria;
   precoMedio: number;
+  // participação de cada marketplace nas vendas do produto (0-1)
+  share: Record<Marketplace, number>;
   // vendas (unidades) por UF no mês
   vendasPorUf: Record<string, number>;
 };
 
 const PRODUTOS_CAT: ProdutoCat[] = [
   { sku: "CJU100", nome: "Castanha de Caju 100g", categoria: "Castanhas", precoMedio: 20.9,
+    share: { "Mercado Livre": 0.72, Magalu: 0.28 },
     vendasPorUf: { SP: 820, RJ: 410, MG: 380, RS: 240, PR: 220, SC: 180, BA: 210, PE: 140, CE: 120, DF: 150, GO: 110, PA: 80, AM: 55 } },
   { sku: "MC100", nome: "Mix de Castanhas 100g", categoria: "Castanhas", precoMedio: 22.9,
+    share: { "Mercado Livre": 0.70, Magalu: 0.30 },
     vendasPorUf: { SP: 610, RJ: 290, MG: 265, RS: 180, PR: 165, SC: 140, BA: 160, PE: 105, CE: 92, DF: 118, GO: 84, PA: 62, AM: 44 } },
   { sku: "CAS200", nome: "Castanha do Pará 200g", categoria: "Castanhas", precoMedio: 32.9,
+    share: { "Mercado Livre": 0.65, Magalu: 0.35 },
     vendasPorUf: { SP: 340, RJ: 160, MG: 145, RS: 100, PR: 92, SC: 78, BA: 88, PE: 60, CE: 52, DF: 68, GO: 46, PA: 38, AM: 28 } },
   { sku: "ECOBAG-MG", nome: "Ecobag Turma da Mônica", categoria: "Costuráveis", precoMedio: 29.9,
+    share: { "Mercado Livre": 0.55, Magalu: 0.45 },
     vendasPorUf: { SP: 180, RJ: 92, MG: 88, RS: 62, PR: 55, SC: 44, BA: 52, PE: 34, CE: 30, DF: 40, GO: 26, PA: 20, AM: 14 } },
   { sku: "NEC-CAS", nome: "Necessaire Cordel", categoria: "Costuráveis", precoMedio: 24.9,
+    share: { "Mercado Livre": 0.60, Magalu: 0.40 },
     vendasPorUf: { SP: 130, RJ: 68, MG: 62, RS: 42, PR: 40, SC: 32, BA: 38, PE: 24, CE: 22, DF: 28, GO: 18, PA: 14, AM: 10 } },
   { sku: "AVE-COR", nome: "Avental Cordel", categoria: "Costuráveis", precoMedio: 39.9,
+    share: { "Mercado Livre": 0.50, Magalu: 0.50 },
     vendasPorUf: { SP: 90, RJ: 46, MG: 42, RS: 30, PR: 28, SC: 22, BA: 26, PE: 18, CE: 16, DF: 20, GO: 14, PA: 10, AM: 7 } },
   { sku: "KIT03", nome: "Kit Presente 3 Produtos", categoria: "Kits", precoMedio: 65.0,
+    share: { "Mercado Livre": 0.68, Magalu: 0.32 },
     vendasPorUf: { SP: 160, RJ: 82, MG: 74, RS: 52, PR: 48, SC: 40, BA: 45, PE: 30, CE: 26, DF: 34, GO: 22, PA: 18, AM: 12 } },
   { sku: "KIT05", nome: "Kit Presente 5 Produtos", categoria: "Kits", precoMedio: 98.0,
+    share: { "Mercado Livre": 0.62, Magalu: 0.38 },
     vendasPorUf: { SP: 110, RJ: 56, MG: 50, RS: 34, PR: 32, SC: 26, BA: 30, PE: 20, CE: 18, DF: 24, GO: 15, PA: 12, AM: 8 } },
   { sku: "KIT-NATAL", nome: "Kit Presente Natal", categoria: "Kits", precoMedio: 129.0,
+    share: { "Mercado Livre": 0.58, Magalu: 0.42 },
     vendasPorUf: { SP: 78, RJ: 40, MG: 36, RS: 24, PR: 22, SC: 18, BA: 21, PE: 14, CE: 12, DF: 17, GO: 11, PA: 8, AM: 5 } },
 ];
 
@@ -80,6 +91,15 @@ const fmtBRL = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 const fmtCompact = (v: number) =>
   v >= 1000 ? `R$ ${(v / 1000).toFixed(v >= 10000 ? 0 : 1)}k` : `R$ ${v}`;
+
+// unidades do produto no recorte de UF e plataforma
+function unidadesDe(p: ProdutoCat, uf: string, plataforma: Marketplace | "todas") {
+  const base = uf === "todas"
+    ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
+    : (p.vendasPorUf[uf] ?? 0);
+  const fator = plataforma === "todas" ? 1 : p.share[plataforma];
+  return Math.round(base * fator);
+}
 
 function PerformancePage() {
   return (
@@ -130,6 +150,7 @@ const now = new Date();
 
 function Categorias() {
   const [categoria, setCategoria] = useState<Categoria | "todas">("todas");
+  const [plataforma, setPlataforma] = useState<Marketplace | "todas">("todas");
   const [uf, setUf] = useState<string>("todas");
   const [mes, setMes] = useState<string>(String(now.getMonth()));
   const [ano, setAno] = useState<string>(String(now.getFullYear()));
@@ -138,13 +159,11 @@ function Categorias() {
     return PRODUTOS_CAT
       .filter((p) => categoria === "todas" || p.categoria === categoria)
       .map((p) => {
-        const unidades = uf === "todas"
-          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
-          : (p.vendasPorUf[uf] ?? 0);
+        const unidades = unidadesDe(p, uf, plataforma);
         return { ...p, unidades, receita: unidades * p.precoMedio };
       })
       .sort((a, b) => b.unidades - a.unidades);
-  }, [categoria, uf]);
+  }, [categoria, uf, plataforma]);
 
   const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
   const totalUnidades = produtos.reduce((s, p) => s + p.unidades, 0);
@@ -153,18 +172,39 @@ function Categorias() {
   const porCategoria = useMemo(() => {
     return CATEGORIAS.map((cat) => {
       const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
-        const unidades = uf === "todas"
-          ? Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0)
-          : (p.vendasPorUf[uf] ?? 0);
+        const unidades = unidadesDe(p, uf, plataforma);
         return { ...p, unidades, receita: unidades * p.precoMedio };
       }).sort((a, b) => b.unidades - a.unidades);
       const receita = items.reduce((s, p) => s + p.receita, 0);
       const unidades = items.reduce((s, p) => s + p.unidades, 0);
       return { cat, items, receita, unidades, top: items[0] };
     });
+  }, [uf, plataforma]);
+
+  // matriz categoria × plataforma (respeita filtro de estado)
+  const matriz = useMemo(() => {
+    const rows = CATEGORIAS.map((cat) => {
+      const porMkt = MARKETPLACES.map((m) => {
+        const items = PRODUTOS_CAT.filter((p) => p.categoria === cat).map((p) => {
+          const unidades = unidadesDe(p, uf, m);
+          return { ...p, unidades, receita: unidades * p.precoMedio };
+        }).sort((a, b) => b.unidades - a.unidades);
+        return {
+          mkt: m,
+          unidades: items.reduce((s, p) => s + p.unidades, 0),
+          receita: items.reduce((s, p) => s + p.receita, 0),
+          top: items[0],
+        };
+      });
+      const receita = porMkt.reduce((s, x) => s + x.receita, 0);
+      return { cat, porMkt, receita };
+    });
+    const total = rows.reduce((s, r) => s + r.receita, 0) || 1;
+    return { rows, total };
   }, [uf]);
 
   const maxUnid = Math.max(1, ...produtos.map((p) => p.unidades));
+
 
   return (
     <>
@@ -177,6 +217,16 @@ function Categorias() {
               <SelectContent>
                 <SelectItem value="todas">Todas as categorias</SelectItem>
                 {CATEGORIAS.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Plataforma</label>
+            <Select value={plataforma} onValueChange={(v) => setPlataforma(v as Marketplace | "todas")}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as plataformas</SelectItem>
+                {MARKETPLACES.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -220,8 +270,56 @@ function Categorias() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard label="Receita (recorte)" value={fmtBRL(totalReceita)} hint={`${totalUnidades.toLocaleString("pt-BR")} unidades`} icon={<DollarSign className="size-4" />} iconColor="bg-success/15 text-success" />
         <MetricCard label="Produto líder" value={lider?.sku ?? "—"} hint={lider ? `${lider.nome} · ${lider.unidades} un.` : ""} icon={<Trophy className="size-4" />} iconColor="bg-brand-yellow/20 text-brand-orange" />
-        <MetricCard label="Categorias" value={String(categoria === "todas" ? CATEGORIAS.length : 1)} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
+        <MetricCard label="Plataforma" value={plataforma === "todas" ? "Todas" : plataforma} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
       </div>
+
+      <Panel title={`Categoria × Plataforma ${uf === "todas" ? "(todos os estados)" : `— ${uf}`}`}>
+        <div className="overflow-x-auto -mx-5">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted-foreground border-b border-border">
+                <th className="px-5 py-2 font-medium">Categoria</th>
+                {MARKETPLACES.map((m) => (
+                  <th key={m} className="px-3 py-2 font-medium text-right whitespace-nowrap">{m}</th>
+                ))}
+                <th className="px-3 py-2 font-medium text-right">Total</th>
+                <th className="px-5 py-2 font-medium">Mais vendido / plataforma</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matriz.rows.map((r) => (
+                <tr key={r.cat} className="border-b border-border/50 hover:bg-muted/40 align-top">
+                  <td className="px-5 py-2 font-semibold">{r.cat}</td>
+                  {r.porMkt.map((x) => (
+                    <td key={x.mkt} className="px-3 py-2 text-right tabular-nums">
+                      <div className="font-medium">{fmtBRL(x.receita)}</div>
+                      <div className="text-[11px] text-muted-foreground">{x.unidades.toLocaleString("pt-BR")} un.</div>
+                    </td>
+                  ))}
+                  <td className="px-3 py-2 text-right tabular-nums font-semibold">
+                    {fmtBRL(r.receita)}
+                    <div className="text-[11px] text-muted-foreground font-normal">
+                      {((r.receita / matriz.total) * 100).toFixed(1)}% do total
+                    </div>
+                  </td>
+                  <td className="px-5 py-2">
+                    <div className="flex flex-col gap-1">
+                      {r.porMkt.map((x) => (
+                        <div key={x.mkt} className="flex items-center gap-2 text-[11px]">
+                          <span className={`size-2 rounded-full ${MARKETPLACE_COLORS[x.mkt]}`} />
+                          <span className="text-muted-foreground">{x.mkt}:</span>
+                          <span className="font-medium">{x.top ? `${x.top.nome} (${x.top.unidades} un.)` : "—"}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {porCategoria.map(({ cat, items, receita, unidades, top }) => (
@@ -249,7 +347,7 @@ function Categorias() {
         ))}
       </div>
 
-      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${MESES[Number(mes)]}/${ano}`}>
+      <Panel title={`Ranking de produtos ${uf === "todas" ? "(todos os estados)" : `— ${uf}`} · ${plataforma === "todas" ? "todas as plataformas" : plataforma} · ${MESES[Number(mes)]}/${ano}`}>
         <div className="space-y-3">
           {produtos.map((p, idx) => (
             <div key={p.sku}>
@@ -262,9 +360,31 @@ function Categorias() {
                 </div>
                 <span className="text-muted-foreground font-semibold shrink-0 ml-3">{p.unidades} un. · {fmtBRL(p.receita)}</span>
               </div>
-              <div className="h-2 rounded-full bg-muted overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-brand-yellow to-brand-orange" style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
-              </div>
+              {plataforma === "todas" ? (
+                <>
+                  <div className="flex h-2 rounded-full bg-muted overflow-hidden">
+                    {MARKETPLACES.map((m) => (
+                      <div
+                        key={m}
+                        className={MARKETPLACE_COLORS[m]}
+                        style={{ width: `${(p.unidades / maxUnid) * 100 * p.share[m]}%` }}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-4 mt-1 text-[11px] text-muted-foreground">
+                    {MARKETPLACES.map((m) => (
+                      <span key={m} className="flex items-center gap-1.5">
+                        <span className={`size-2 rounded-full ${MARKETPLACE_COLORS[m]}`} />
+                        {m}: {Math.round(p.unidades * p.share[m])} un. ({(p.share[m] * 100).toFixed(0)}%)
+                      </span>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                  <div className={`h-full ${MARKETPLACE_COLORS[plataforma]}`} style={{ width: `${(p.unidades / maxUnid) * 100}%` }} />
+                </div>
+              )}
             </div>
           ))}
           {produtos.length === 0 && <div className="text-sm text-muted-foreground">Nenhum produto para o filtro selecionado.</div>}
