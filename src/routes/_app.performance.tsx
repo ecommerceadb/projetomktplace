@@ -221,6 +221,16 @@ function Categorias() {
             </Select>
           </div>
           <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Plataforma</label>
+            <Select value={plataforma} onValueChange={(v) => setPlataforma(v as Marketplace | "todas")}>
+              <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as plataformas</SelectItem>
+                {MARKETPLACES.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Estado</label>
             <Select value={uf} onValueChange={setUf}>
               <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
