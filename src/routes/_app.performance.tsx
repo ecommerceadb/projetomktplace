@@ -270,8 +270,56 @@ function Categorias() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard label="Receita (recorte)" value={fmtBRL(totalReceita)} hint={`${totalUnidades.toLocaleString("pt-BR")} unidades`} icon={<DollarSign className="size-4" />} iconColor="bg-success/15 text-success" />
         <MetricCard label="Produto líder" value={lider?.sku ?? "—"} hint={lider ? `${lider.nome} · ${lider.unidades} un.` : ""} icon={<Trophy className="size-4" />} iconColor="bg-brand-yellow/20 text-brand-orange" />
-        <MetricCard label="Categorias" value={String(categoria === "todas" ? CATEGORIAS.length : 1)} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
+        <MetricCard label="Plataforma" value={plataforma === "todas" ? "Todas" : plataforma} hint={uf === "todas" ? "todos os estados" : `estado: ${uf}`} icon={<Tag className="size-4" />} />
       </div>
+
+      <Panel title={`Categoria × Plataforma ${uf === "todas" ? "(todos os estados)" : `— ${uf}`}`}>
+        <div className="overflow-x-auto -mx-5">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted-foreground border-b border-border">
+                <th className="px-5 py-2 font-medium">Categoria</th>
+                {MARKETPLACES.map((m) => (
+                  <th key={m} className="px-3 py-2 font-medium text-right whitespace-nowrap">{m}</th>
+                ))}
+                <th className="px-3 py-2 font-medium text-right">Total</th>
+                <th className="px-5 py-2 font-medium">Mais vendido / plataforma</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matriz.rows.map((r) => (
+                <tr key={r.cat} className="border-b border-border/50 hover:bg-muted/40 align-top">
+                  <td className="px-5 py-2 font-semibold">{r.cat}</td>
+                  {r.porMkt.map((x) => (
+                    <td key={x.mkt} className="px-3 py-2 text-right tabular-nums">
+                      <div className="font-medium">{fmtBRL(x.receita)}</div>
+                      <div className="text-[11px] text-muted-foreground">{x.unidades.toLocaleString("pt-BR")} un.</div>
+                    </td>
+                  ))}
+                  <td className="px-3 py-2 text-right tabular-nums font-semibold">
+                    {fmtBRL(r.receita)}
+                    <div className="text-[11px] text-muted-foreground font-normal">
+                      {((r.receita / matriz.total) * 100).toFixed(1)}% do total
+                    </div>
+                  </td>
+                  <td className="px-5 py-2">
+                    <div className="flex flex-col gap-1">
+                      {r.porMkt.map((x) => (
+                        <div key={x.mkt} className="flex items-center gap-2 text-[11px]">
+                          <span className={`size-2 rounded-full ${MARKETPLACE_COLORS[x.mkt]}`} />
+                          <span className="text-muted-foreground">{x.mkt}:</span>
+                          <span className="font-medium">{x.top ? `${x.top.nome} (${x.top.unidades} un.)` : "—"}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {porCategoria.map(({ cat, items, receita, unidades, top }) => (
