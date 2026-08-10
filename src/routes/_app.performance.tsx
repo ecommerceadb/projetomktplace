@@ -595,14 +595,17 @@ function Geografia() {
 }
 
 function Curva() {
+  const [plataforma, setPlataforma] = useState<Marketplace | "todas">("todas");
+  const [uf, setUf] = useState<string>("todas");
+
   const produtos = useMemo(() => {
     return PRODUTOS_CAT.map((p) => {
-      const unidades = Object.values(p.vendasPorUf).reduce((a, b) => a + b, 0);
+      const unidades = unidadesDe(p, uf, plataforma);
       return { ...p, unidades, receita: unidades * p.precoMedio };
     }).sort((a, b) => b.receita - a.receita);
-  }, []);
+  }, [plataforma, uf]);
 
-  const totalReceita = produtos.reduce((s, p) => s + p.receita, 0);
+  const totalReceita = produtos.reduce((s, p) => s + p.receita, 0) || 1;
   let acumulado = 0;
   const comCurva = produtos.map((p) => {
     acumulado += p.receita;
@@ -628,8 +631,38 @@ function Curva() {
   return (
     <>
       <Panel>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-end">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Plataforma</label>
+            <Select value={plataforma} onValueChange={(v) => setPlataforma(v as Marketplace | "todas")}>
+              <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as plataformas</SelectItem>
+                {MARKETPLACES.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Estado</label>
+            <Select value={uf} onValueChange={setUf}>
+              <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todos os estados</SelectItem>
+                {STATE_DATA.map((s) => <SelectItem key={s.uf} value={s.uf}>{s.uf} — {s.estado}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button variant="outline" size="sm" className="self-start sm:self-end">
+            <Download className="size-3.5 mr-1.5" /> Exportar CSV
+          </Button>
+        </div>
+      </Panel>
+
+      <Panel>
         <p className="text-xs text-muted-foreground">
-          Classificação de produtos pela <strong>Curva de Pareto (ABC)</strong>: <strong>A</strong> concentra 80% da
+          Classificação de produtos pela <strong>Curva de Pareto (ABC)</strong> no recorte{' '}
+          <strong>{plataforma === "todas" ? "todas as plataformas" : plataforma}</strong>{' '}
+          {uf === "todas" ? "(todos os estados)" : `(estado: ${uf})`}: <strong>A</strong> concentra 80% da
           receita, <strong>B</strong> os próximos 15% e <strong>C</strong> os 5% restantes.
         </p>
       </Panel>
@@ -670,7 +703,7 @@ function Curva() {
         </div>
       </Panel>
 
-      <Panel title="Ranking Pareto por produto">
+      <Panel title={`Ranking Pareto por produto · ${plataforma === "todas" ? "Todas as plataformas" : plataforma} · ${uf === "todas" ? "todos os estados" : uf}`}>
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead>
