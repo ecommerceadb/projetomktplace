@@ -113,7 +113,7 @@ function ImportButtons() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<ParsedCampaign[] | null>(null);
+  const [result, setResult] = useState<SheetData[] | null>(null);
   const [open, setOpen] = useState(false);
 
   const onPick = () => inputRef.current?.click();
@@ -121,14 +121,12 @@ function ImportButtons() {
     setAnalyzing(true);
     try {
       const XLSX = await import("xlsx");
-      const wb = XLSX.read(await f.arrayBuffer(), { type: "array" });
-      let rows: Record<string, unknown>[] = [];
-      for (const name of wb.SheetNames) {
-        const sheetRows = XLSX.utils.sheet_to_json<Record<string, unknown>>(wb.Sheets[name], { defval: "" });
-        const parsed = parseCampaignRows(sheetRows);
-        if (parsed.length) { rows = sheetRows; break; }
-      }
-      setResult(parseCampaignRows(rows));
+      const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+      const sheets = wb.SheetNames.map((name) =>
+        buildSheet(name, XLSX.utils.sheet_to_json<unknown[]>(wb.Sheets[name], { header: 1, defval: "", raw: true })),
+      ).filter((s) => s.rows.length > 0);
+      if (!sheets.length) { toast.error("A planilha está vazia."); return; }
+      setResult(sheets);
       setOpen(true);
     } catch (err) {
       console.error(err);
