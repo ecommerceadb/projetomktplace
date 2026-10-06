@@ -14,6 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { toast } from "sonner";
+import { CampaignFileAnalysis, parseCampaignRows, type ParsedCampaign } from "@/components/CampaignFileAnalysis";
 
 export const Route = createFileRoute("/_app/campanhas")({
   head: () => ({ meta: [{ title: "Campanhas — Analista IA — Operações ADB" }] }),
@@ -110,30 +112,58 @@ function CampanhasPage() {
 function ImportButtons() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [analyzing, setAnalyzing] = useState(false);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [result, setResult] = useState<ParsedCampaign[] | null>(null);
+  const [open, setOpen] = useState(false);
 
   const onPick = () => inputRef.current?.click();
+  const runAnalysis = async (f: File) => {
+    setAnalyzing(true);
+    try {
+      const XLSX = await import("xlsx");
+      const wb = XLSX.read(await f.arrayBuffer(), { type: "array" });
+      let rows: Record<string, unknown>[] = [];
+      for (const name of wb.SheetNames) {
+        const sheetRows = XLSX.utils.sheet_to_json<Record<string, unknown>>(wb.Sheets[name], { defval: "" });
+        const parsed = parseCampaignRows(sheetRows);
+        if (parsed.length) { rows = sheetRows; break; }
+      }
+      setResult(parseCampaignRows(rows));
+      setOpen(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Não foi possível ler o arquivo. Envie um Excel (.xlsx/.xls) ou CSV.");
+    } finally {
+      setAnalyzing(false);
+    }
+  };
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
+    e.target.value = "";
     if (!f) return;
-    setFileName(f.name);
+    setFile(f);
+    if (/\.(xlsx|xls|csv)$/i.test(f.name)) runAnalysis(f);
   };
   const analyze = () => {
-    setAnalyzing(true);
-    setTimeout(() => setAnalyzing(false), 1800);
+    if (!file) { toast.info("Envie primeiro uma planilha de campanhas."); onPick(); return; }
+    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) { toast.error("A análise automática funciona com Excel ou CSV."); return; }
+    runAnalysis(file);
   };
 
   return (
     <div className="flex items-center gap-2">
-      <input ref={inputRef} type="file" hidden accept=".png,.jpg,.jpeg,.pdf,.xlsx,.csv" onChange={onFile} />
+      <input ref={inputRef} type="file" hidden accept=".xlsx,.xls,.csv,.png,.jpg,.jpeg,.pdf" onChange={onFile} />
       <Button variant="outline" size="sm" onClick={onPick}>
         <Upload className="size-3.5 mr-1.5" />
-        {fileName ? <span className="max-w-[160px] truncate">{fileName}</span> : "Upload de arquivo"}
+        {file ? <span className="max-w-[160px] truncate">{file.name}</span> : "Upload de arquivo"}
       </Button>
       <Button size="sm" onClick={analyze} disabled={analyzing} className="bg-info hover:bg-info/90 text-info-foreground">
         {analyzing ? <Loader2 className="size-3.5 mr-1.5 animate-spin" /> : <Sparkles className="size-3.5 mr-1.5" />}
         {analyzing ? "Analisando..." : "Analisar com IA"}
       </Button>
+      {result && file && (
+        <CampaignFileAnalysis open={open} onOpenChange={setOpen} fileName={file.name} data={result} />
+      )}
     </div>
   );
 }
