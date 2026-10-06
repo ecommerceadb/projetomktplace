@@ -9,27 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
-import { Route as AppCampanhasRouteImport } from './routes/_app.campanhas'
-import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
-import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
-import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
-import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
-import { Route as AppMagazineLuizaRouteImport } from './routes/_app.magazine-luiza'
-import { Route as AppMercadoLivreRouteImport } from './routes/_app.mercado-livre'
-import { Route as AppPerformanceRouteImport } from './routes/_app.performance'
-import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
 import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
+import { Route as AppPlanejamentoRouteImport } from './routes/_app.planejamento'
+import { Route as AppPerformanceRouteImport } from './routes/_app.performance'
+import { Route as AppMercadoLivreRouteImport } from './routes/_app.mercado-livre'
+import { Route as AppMagazineLuizaRouteImport } from './routes/_app.magazine-luiza'
+import { Route as AppEstoqueRouteImport } from './routes/_app.estoque'
+import { Route as AppConfiguracoesRouteImport } from './routes/_app.configuracoes'
+import { Route as AppCentralDadosRouteImport } from './routes/_app.central-dados'
+import { Route as AppCentralAlertasRouteImport } from './routes/_app.central-alertas'
+import { Route as AppCampanhasRouteImport } from './routes/_app.campanhas'
 
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -37,44 +37,9 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCampanhasRoute = AppCampanhasRouteImport.update({
-  id: '/campanhas',
-  path: '/campanhas',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppCentralAlertasRoute = AppCentralAlertasRouteImport.update({
-  id: '/central-alertas',
-  path: '/central-alertas',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
-  id: '/central-dados',
-  path: '/central-dados',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
-  id: '/configuracoes',
-  path: '/configuracoes',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppEstoqueRoute = AppEstoqueRouteImport.update({
-  id: '/estoque',
-  path: '/estoque',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMagazineLuizaRoute = AppMagazineLuizaRouteImport.update({
-  id: '/magazine-luiza',
-  path: '/magazine-luiza',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMercadoLivreRoute = AppMercadoLivreRouteImport.update({
-  id: '/mercado-livre',
-  path: '/mercado-livre',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPerformanceRoute = AppPerformanceRouteImport.update({
-  id: '/performance',
-  path: '/performance',
+const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
@@ -82,9 +47,44 @@ const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
   path: '/planejamento',
   getParentRoute: () => AppRoute,
 } as any)
-const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
-  id: '/relatorios',
-  path: '/relatorios',
+const AppPerformanceRoute = AppPerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMercadoLivreRoute = AppMercadoLivreRouteImport.update({
+  id: '/mercado-livre',
+  path: '/mercado-livre',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMagazineLuizaRoute = AppMagazineLuizaRouteImport.update({
+  id: '/magazine-luiza',
+  path: '/magazine-luiza',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEstoqueRoute = AppEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCentralDadosRoute = AppCentralDadosRouteImport.update({
+  id: '/central-dados',
+  path: '/central-dados',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCentralAlertasRoute = AppCentralAlertasRouteImport.update({
+  id: '/central-alertas',
+  path: '/central-alertas',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCampanhasRoute = AppCampanhasRouteImport.update({
+  id: '/campanhas',
+  path: '/campanhas',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -185,18 +185,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/': {
@@ -206,60 +206,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/campanhas': {
-      id: '/_app/campanhas'
-      path: '/campanhas'
-      fullPath: '/campanhas'
-      preLoaderRoute: typeof AppCampanhasRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/central-alertas': {
-      id: '/_app/central-alertas'
-      path: '/central-alertas'
-      fullPath: '/central-alertas'
-      preLoaderRoute: typeof AppCentralAlertasRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/central-dados': {
-      id: '/_app/central-dados'
-      path: '/central-dados'
-      fullPath: '/central-dados'
-      preLoaderRoute: typeof AppCentralDadosRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/configuracoes': {
-      id: '/_app/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/configuracoes'
-      preLoaderRoute: typeof AppConfiguracoesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/estoque': {
-      id: '/_app/estoque'
-      path: '/estoque'
-      fullPath: '/estoque'
-      preLoaderRoute: typeof AppEstoqueRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/magazine-luiza': {
-      id: '/_app/magazine-luiza'
-      path: '/magazine-luiza'
-      fullPath: '/magazine-luiza'
-      preLoaderRoute: typeof AppMagazineLuizaRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/mercado-livre': {
-      id: '/_app/mercado-livre'
-      path: '/mercado-livre'
-      fullPath: '/mercado-livre'
-      preLoaderRoute: typeof AppMercadoLivreRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/performance': {
-      id: '/_app/performance'
-      path: '/performance'
-      fullPath: '/performance'
-      preLoaderRoute: typeof AppPerformanceRouteImport
+    '/_app/relatorios': {
+      id: '/_app/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AppRelatoriosRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/planejamento': {
@@ -269,11 +220,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPlanejamentoRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/relatorios': {
-      id: '/_app/relatorios'
-      path: '/relatorios'
-      fullPath: '/relatorios'
-      preLoaderRoute: typeof AppRelatoriosRouteImport
+    '/_app/performance': {
+      id: '/_app/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof AppPerformanceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mercado-livre': {
+      id: '/_app/mercado-livre'
+      path: '/mercado-livre'
+      fullPath: '/mercado-livre'
+      preLoaderRoute: typeof AppMercadoLivreRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/magazine-luiza': {
+      id: '/_app/magazine-luiza'
+      path: '/magazine-luiza'
+      fullPath: '/magazine-luiza'
+      preLoaderRoute: typeof AppMagazineLuizaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/estoque': {
+      id: '/_app/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AppEstoqueRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/configuracoes': {
+      id: '/_app/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AppConfiguracoesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/central-dados': {
+      id: '/_app/central-dados'
+      path: '/central-dados'
+      fullPath: '/central-dados'
+      preLoaderRoute: typeof AppCentralDadosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/central-alertas': {
+      id: '/_app/central-alertas'
+      path: '/central-alertas'
+      fullPath: '/central-alertas'
+      preLoaderRoute: typeof AppCentralAlertasRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/campanhas': {
+      id: '/_app/campanhas'
+      path: '/campanhas'
+      fullPath: '/campanhas'
+      preLoaderRoute: typeof AppCampanhasRouteImport
       parentRoute: typeof AppRoute
     }
   }
