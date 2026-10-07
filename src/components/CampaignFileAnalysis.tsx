@@ -149,7 +149,7 @@ function analyze(sheet: SheetData) {
     if (zero) insights.push(`${zero} item(ns) sem valor em "${metric.name}".`);
   }
   cols.filter((c) => numeric.includes(c.kind) && c !== metric && c !== inv && c !== rec).slice(0, 6).forEach((c) =>
-    insights.push(`${c.name}: total ${fmt(c.kind, c.sum)}, média ${fmt(c.kind, c.avg)} (mín ${fmt(c.kind, c.min)}, máx ${fmt(c.kind, c.max)}).`),
+    insights.push(`${c.name}: ${c.kind === "percentual" ? "" : `total ${fmt(c.kind, c.sum)}, `}média ${fmt(c.kind, c.avg)} (mín ${fmt(c.kind, c.min)}, máx ${fmt(c.kind, c.max)}).`),
   );
   cols.filter((c) => c.kind === "texto" && c !== nameCol && c.distinct > 1 && c.distinct <= 15).slice(0, 3).forEach((c) =>
     insights.push(`${c.name}: ${c.distinct} valores — mais frequentes: ${c.top.map(([k, n]) => `${k} (${n})`).join(", ")}.`),
@@ -248,7 +248,7 @@ function SheetAnalysis({ sheet }: { sheet: SheetData }) {
                     <td className="p-2 font-medium max-w-[200px] truncate">{c.name}</td>
                     <td className="p-2">{KIND_LABEL[c.kind]}</td>
                     <td className="p-2">{c.filled}/{sheet.rows.length}</td>
-                    <td className="p-2">{n ? fmt(c.kind, c.sum) : "—"}</td>
+                    <td className="p-2">{n && c.kind !== "percentual" ? fmt(c.kind, c.sum) : "—"}</td>
                     <td className="p-2">{n ? fmt(c.kind, c.avg) : "—"}</td>
                     <td className="p-2">{n ? fmt(c.kind, c.min) : "—"}</td>
                     <td className="p-2">{n ? fmt(c.kind, c.max) : "—"}</td>
