@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
-import { CampaignFileAnalysis, parseCampaignRows, type ParsedCampaign } from "@/components/CampaignFileAnalysis";
+import { CampaignFileAnalysis, buildSheet, type SheetData } from "@/components/CampaignFileAnalysis";
 
 export const Route = createFileRoute("/_app/campanhas")({
   head: () => ({ meta: [{ title: "Campanhas — Analista IA — Operações ADB" }] }),
@@ -160,7 +160,7 @@ function ImportButtons() {
         {analyzing ? "Analisando..." : "Analisar com IA"}
       </Button>
       {result && file && (
-        <CampaignFileAnalysis open={open} onOpenChange={setOpen} fileName={file.name} data={result} />
+        <CampaignFileAnalysis open={open} onOpenChange={setOpen} fileName={file.name} sheets={result} />
       )}
     </div>
   );
